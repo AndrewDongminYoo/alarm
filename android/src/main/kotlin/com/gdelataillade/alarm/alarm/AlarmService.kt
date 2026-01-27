@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import com.gdelataillade.alarm.models.AlarmSettings
+import com.gdelataillade.alarm.models.NotificationSettings
 import com.gdelataillade.alarm.services.AlarmRingingLiveData
 import com.gdelataillade.alarm.services.AlarmStorage
 import com.gdelataillade.alarm.services.AudioService
@@ -24,6 +25,7 @@ import kotlinx.serialization.json.Json
 class AlarmService : Service() {
     companion object {
         private const val TAG = "AlarmService"
+        private const val FALLBACK_NOTIFICATION_ID = 424242
 
         var instance: AlarmService? = null
 
@@ -54,16 +56,22 @@ class AlarmService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
+        val id = intent?.getIntExtra("id", 0) ?: 0
+        alarmId = id
+        val notificationId = if (id != 0) id else FALLBACK_NOTIFICATION_ID
+
         if (intent == null) {
+            Log.e(TAG, "AlarmService started with null intent; starting fallback foreground to avoid timeout.")
+            startFallbackForeground(notificationId)
             stopSelf()
             return START_NOT_STICKY
         }
 
-        val id = intent.getIntExtra("id", 0)
-        alarmId = id
         val action = intent.getStringExtra(AlarmReceiver.EXTRA_ALARM_ACTION)
 
         if (action == "STOP_ALARM" && id != 0) {
+            Log.w(TAG, "Received STOP_ALARM without alarm settings; starting fallback foreground before stopping.")
+            startFallbackForeground(notificationId)
             unsaveAlarm(id)
             return START_NOT_STICKY
         }
@@ -83,6 +91,7 @@ class AlarmService : Service() {
         val alarmSettingsJson = intent.getStringExtra("alarmSettings")
         if (alarmSettingsJson == null) {
             Log.e(TAG, "Intent is missing AlarmSettings.")
+            startFallbackForeground(notificationId)
             stopSelf()
             return START_NOT_STICKY
         }
@@ -92,6 +101,7 @@ class AlarmService : Service() {
             alarmSettings = Json.decodeFromString<AlarmSettings>(alarmSettingsJson)
         } catch (e: Exception) {
             Log.e(TAG, "Cannot parse AlarmSettings from Intent.")
+            startFallbackForeground(notificationId)
             stopSelf()
             return START_NOT_STICKY
         }
@@ -106,6 +116,7 @@ class AlarmService : Service() {
 
         // Start the service in the foreground
         try {
+            Log.d(TAG, "Starting foreground service for alarm id: $id")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 try {
                     startAlarmService(id, notification)
@@ -232,6 +243,42 @@ class AlarmService : Service() {
         } else {
             startForeground(id, notification)
         }
+    }
+
+    private fun startFallbackForeground(notificationId: Int) {
+        val notification = buildFallbackNotification(notificationId)
+        try {
+            startAlarmService(notificationId, notification)
+            Log.d(TAG, "Fallback foreground notification posted for id: $notificationId")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to start fallback foreground notification: ${e.message}", e)
+        }
+    }
+
+    private fun buildFallbackNotification(notificationId: Int): Notification {
+        val notificationHandler = NotificationHandler(this)
+        val appIntent =
+            applicationContext.packageManager.getLaunchIntentForPackage(applicationContext.packageName)
+        val pendingIntent =
+            PendingIntent.getActivity(
+                this,
+                notificationId,
+                appIntent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+        val appLabel = applicationInfo.loadLabel(packageManager).toString()
+        val notificationSettings =
+            NotificationSettings(
+                title = appLabel,
+                body = "Alarm service recovery",
+            )
+
+        return notificationHandler.buildNotification(
+            notificationSettings,
+            false,
+            pendingIntent,
+            notificationId,
+        )
     }
 
     fun handleStopAlarmCommand(alarmId: Int) {
