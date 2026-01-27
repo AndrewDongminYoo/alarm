@@ -75,15 +75,15 @@ class NotificationSettings extends Equatable {
 
   /// Converts to wire datatype which is used for host platform communication.
   NotificationSettingsWire toWire() => NotificationSettingsWire(
-        title: title,
-        body: body,
-        stopButton: stopButton,
-        icon: icon,
-        iconColorAlpha: iconColor?.a,
-        iconColorRed: iconColor?.r,
-        iconColorGreen: iconColor?.g,
-        iconColorBlue: iconColor?.b,
-      );
+    title: title,
+    body: body,
+    stopButton: stopButton,
+    icon: icon,
+    iconColorAlpha: iconColor?.a,
+    iconColorRed: iconColor?.r,
+    iconColorGreen: iconColor?.g,
+    iconColorBlue: iconColor?.b,
+  );
 
   /// Creates a copy of this notification settings but with the given fields
   /// replaced with the new values.

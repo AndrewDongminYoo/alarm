@@ -13,23 +13,18 @@ class VolumeSettings extends Equatable {
     this.fadeDuration,
     this.fadeSteps = const [],
     this.volumeEnforced = false,
-  })  : assert(
-          volume == null || (volume >= 0 && volume <= 1),
-          'volume must be NULL or in the range [0, 1]',
-        ),
-        assert(
-          fadeDuration == null || fadeDuration > Duration.zero,
-          'fadeDuration must be NULL or stricly positive',
-        );
+  }) : assert(
+         volume == null || (volume >= 0 && volume <= 1),
+         'volume must be NULL or in the range [0, 1]',
+       ),
+       assert(
+         fadeDuration == null || fadeDuration > Duration.zero,
+         'fadeDuration must be NULL or stricly positive',
+       );
 
   /// Constructs [VolumeSettings] with fixed volume level.
-  const VolumeSettings.fixed({
-    double? volume,
-    bool volumeEnforced = false,
-  }) : this._(
-          volume: volume,
-          volumeEnforced: volumeEnforced,
-        );
+  const VolumeSettings.fixed({double? volume, bool volumeEnforced = false})
+    : this._(volume: volume, volumeEnforced: volumeEnforced);
 
   /// Constructs [VolumeSettings] with fading volume level.
   const VolumeSettings.fade({
@@ -37,10 +32,10 @@ class VolumeSettings extends Equatable {
     double? volume,
     bool volumeEnforced = false,
   }) : this._(
-          volume: volume,
-          fadeDuration: fadeDuration,
-          volumeEnforced: volumeEnforced,
-        );
+         volume: volume,
+         fadeDuration: fadeDuration,
+         volumeEnforced: volumeEnforced,
+       );
 
   /// Constructs [VolumeSettings] with slowly increasing (stepped) volume level.
   factory VolumeSettings.staircaseFade({
@@ -100,11 +95,11 @@ class VolumeSettings extends Equatable {
 
   /// Converts to wire datatype which is used for host platform communication.
   VolumeSettingsWire toWire() => VolumeSettingsWire(
-        volume: volume,
-        fadeDurationMillis: fadeDuration?.inMilliseconds,
-        fadeSteps: fadeSteps.map((e) => e.toWire()).toList(),
-        volumeEnforced: volumeEnforced,
-      );
+    volume: volume,
+    fadeDurationMillis: fadeDuration?.inMilliseconds,
+    fadeSteps: fadeSteps.map((e) => e.toWire()).toList(),
+    volumeEnforced: volumeEnforced,
+  );
 
   @override
   List<Object?> get props => [volume, fadeDuration, fadeSteps, volumeEnforced];
@@ -115,14 +110,8 @@ class VolumeSettings extends Equatable {
 class VolumeFadeStep extends Equatable {
   /// Creates a new volume fade step.
   VolumeFadeStep(this.time, this.volume)
-      : assert(
-          !time.isNegative,
-          'Time must be positive',
-        ),
-        assert(
-          volume >= 0 && volume <= 1,
-          'Volume must be in the range [0, 1]',
-        );
+    : assert(!time.isNegative, 'Time must be positive'),
+      assert(volume >= 0 && volume <= 1, 'Volume must be in the range [0, 1]');
 
   /// Converts JSON object to [VolumeFadeStep].
   factory VolumeFadeStep.fromJson(Map<String, dynamic> json) =>
@@ -138,10 +127,8 @@ class VolumeFadeStep extends Equatable {
   Map<String, dynamic> toJson() => _$VolumeFadeStepToJson(this);
 
   /// Converts to wire datatype which is used for host platform communication.
-  VolumeFadeStepWire toWire() => VolumeFadeStepWire(
-        timeMillis: time.inMilliseconds,
-        volume: volume,
-      );
+  VolumeFadeStepWire toWire() =>
+      VolumeFadeStepWire(timeMillis: time.inMilliseconds, volume: volume);
 
   @override
   List<Object?> get props => [time, volume];

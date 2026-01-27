@@ -15,8 +15,11 @@ PlatformException _createConnectionError(String channelName) {
   );
 }
 
-List<Object?> wrapResponse(
-    {Object? result, PlatformException? error, bool empty = false}) {
+List<Object?> wrapResponse({
+  Object? result,
+  PlatformException? error,
+  bool empty = false,
+}) {
   if (empty) {
     return <Object?>[];
   }
@@ -29,14 +32,17 @@ List<Object?> wrapResponse(
 bool _deepEquals(Object? a, Object? b) {
   if (a is List && b is List) {
     return a.length == b.length &&
-        a.indexed
-            .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
+        a.indexed.every(
+          ((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]),
+        );
   }
   if (a is Map && b is Map) {
     return a.length == b.length &&
-        a.entries.every((MapEntry<Object?, Object?> entry) =>
-            (b as Map<Object?, Object?>).containsKey(entry.key) &&
-            _deepEquals(entry.value, b[entry.key]));
+        a.entries.every(
+          (MapEntry<Object?, Object?> entry) =>
+              (b as Map<Object?, Object?>).containsKey(entry.key) &&
+              _deepEquals(entry.value, b[entry.key]),
+        );
   }
   return a == b;
 }
@@ -176,12 +182,7 @@ class VolumeSettingsWire {
   bool volumeEnforced;
 
   List<Object?> _toList() {
-    return <Object?>[
-      volume,
-      fadeDurationMillis,
-      fadeSteps,
-      volumeEnforced,
-    ];
+    return <Object?>[volume, fadeDurationMillis, fadeSteps, volumeEnforced];
   }
 
   Object encode() {
@@ -216,20 +217,14 @@ class VolumeSettingsWire {
 }
 
 class VolumeFadeStepWire {
-  VolumeFadeStepWire({
-    required this.timeMillis,
-    required this.volume,
-  });
+  VolumeFadeStepWire({required this.timeMillis, required this.volume});
 
   int timeMillis;
 
   double volume;
 
   List<Object?> _toList() {
-    return <Object?>[
-      timeMillis,
-      volume,
-    ];
+    return <Object?>[timeMillis, volume];
   }
 
   Object encode() {
@@ -390,9 +385,10 @@ class AlarmApi {
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
   AlarmApi({BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
-      : pigeonVar_binaryMessenger = binaryMessenger,
-        pigeonVar_messageChannelSuffix =
-            messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+    : pigeonVar_binaryMessenger = binaryMessenger,
+      pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty
+          ? '.$messageChannelSuffix'
+          : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
@@ -404,12 +400,13 @@ class AlarmApi {
         'dev.flutter.pigeon.alarm.AlarmApi.setAlarm$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[alarmSettings],
     );
-    final Future<Object?> pigeonVar_sendFuture =
-        pigeonVar_channel.send(<Object?>[alarmSettings]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -430,12 +427,13 @@ class AlarmApi {
         'dev.flutter.pigeon.alarm.AlarmApi.stopAlarm$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[alarmId],
     );
-    final Future<Object?> pigeonVar_sendFuture =
-        pigeonVar_channel.send(<Object?>[alarmId]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -456,10 +454,10 @@ class AlarmApi {
         'dev.flutter.pigeon.alarm.AlarmApi.stopAll$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
-    );
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
@@ -481,12 +479,13 @@ class AlarmApi {
         'dev.flutter.pigeon.alarm.AlarmApi.isRinging$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[alarmId],
     );
-    final Future<Object?> pigeonVar_sendFuture =
-        pigeonVar_channel.send(<Object?>[alarmId]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -507,18 +506,21 @@ class AlarmApi {
     }
   }
 
-  Future<void> setWarningNotificationOnKill(
-      {required String title, required String body}) async {
+  Future<void> setWarningNotificationOnKill({
+    required String title,
+    required String body,
+  }) async {
     final String pigeonVar_channelName =
         'dev.flutter.pigeon.alarm.AlarmApi.setWarningNotificationOnKill$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[title, body],
     );
-    final Future<Object?> pigeonVar_sendFuture =
-        pigeonVar_channel.send(<Object?>[title, body]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -539,10 +541,10 @@ class AlarmApi {
         'dev.flutter.pigeon.alarm.AlarmApi.disableWarningNotificationOnKill$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
-    );
+          pigeonVar_channelName,
+          pigeonChannelCodec,
+          binaryMessenger: pigeonVar_binaryMessenger,
+        );
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
@@ -572,25 +574,30 @@ abstract class AlarmTriggerApi {
     BinaryMessenger? binaryMessenger,
     String messageChannelSuffix = '',
   }) {
-    messageChannelSuffix =
-        messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+    messageChannelSuffix = messageChannelSuffix.isNotEmpty
+        ? '.$messageChannelSuffix'
+        : '';
     {
-      final BasicMessageChannel<
-          Object?> pigeonVar_channel = BasicMessageChannel<
-              Object?>(
-          'dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmRang$messageChannelSuffix',
-          pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmRang$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
       if (api == null) {
         pigeonVar_channel.setMessageHandler(null);
       } else {
         pigeonVar_channel.setMessageHandler((Object? message) async {
-          assert(message != null,
-              'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmRang was null.');
+          assert(
+            message != null,
+            'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmRang was null.',
+          );
           final List<Object?> args = (message as List<Object?>?)!;
           final int? arg_alarmId = (args[0] as int?);
-          assert(arg_alarmId != null,
-              'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmRang was null, expected non-null int.');
+          assert(
+            arg_alarmId != null,
+            'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmRang was null, expected non-null int.',
+          );
           try {
             await api.alarmRang(arg_alarmId!);
             return wrapResponse(empty: true);
@@ -598,28 +605,33 @@ abstract class AlarmTriggerApi {
             return wrapResponse(error: e);
           } catch (e) {
             return wrapResponse(
-                error: PlatformException(code: 'error', message: e.toString()));
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
           }
         });
       }
     }
     {
-      final BasicMessageChannel<
-          Object?> pigeonVar_channel = BasicMessageChannel<
-              Object?>(
-          'dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmStopped$messageChannelSuffix',
-          pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
+      final BasicMessageChannel<Object?>
+      pigeonVar_channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmStopped$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
       if (api == null) {
         pigeonVar_channel.setMessageHandler(null);
       } else {
         pigeonVar_channel.setMessageHandler((Object? message) async {
-          assert(message != null,
-              'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmStopped was null.');
+          assert(
+            message != null,
+            'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmStopped was null.',
+          );
           final List<Object?> args = (message as List<Object?>?)!;
           final int? arg_alarmId = (args[0] as int?);
-          assert(arg_alarmId != null,
-              'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmStopped was null, expected non-null int.');
+          assert(
+            arg_alarmId != null,
+            'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmStopped was null, expected non-null int.',
+          );
           try {
             await api.alarmStopped(arg_alarmId!);
             return wrapResponse(empty: true);
@@ -627,7 +639,8 @@ abstract class AlarmTriggerApi {
             return wrapResponse(error: e);
           } catch (e) {
             return wrapResponse(
-                error: PlatformException(code: 'error', message: e.toString()));
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
           }
         });
       }

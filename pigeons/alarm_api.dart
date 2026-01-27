@@ -10,9 +10,7 @@ import 'package:pigeon/pigeon.dart';
     swiftOut: 'ios/Classes/generated/FlutterBindings.g.swift',
     kotlinOut:
         'android/src/main/kotlin/com/gdelataillade/alarm/generated/FlutterBindings.g.kt',
-    kotlinOptions: KotlinOptions(
-      package: 'com.gdelataillade.alarm.generated',
-    ),
+    kotlinOptions: KotlinOptions(package: 'com.gdelataillade.alarm.generated'),
   ),
 )
 class AlarmSettingsWire {
@@ -60,10 +58,7 @@ class VolumeSettingsWire {
 }
 
 class VolumeFadeStepWire {
-  const VolumeFadeStepWire({
-    required this.timeMillis,
-    required this.volume,
-  });
+  const VolumeFadeStepWire({required this.timeMillis, required this.volume});
 
   final int timeMillis;
   final double volume;

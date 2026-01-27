@@ -13,9 +13,9 @@ class AlarmTriggerApiImpl extends AlarmTriggerApi {
   AlarmTriggerApiImpl._({
     required AlarmRangCallback alarmRang,
     required AlarmStoppedCallback alarmStopped,
-  })  : _alarmRang = alarmRang,
-        _alarmStopped = alarmStopped,
-        super() {
+  }) : _alarmRang = alarmRang,
+       _alarmStopped = alarmStopped,
+       super() {
     AlarmTriggerApi.setUp(this);
   }
 
@@ -44,9 +44,11 @@ class AlarmTriggerApiImpl extends AlarmTriggerApi {
   Future<void> alarmRang(int alarmId) async {
     final settings = await Alarm.getAlarm(alarmId);
     if (settings == null) {
-      _log.severe('Alarm with id $alarmId started ringing but the settings '
-          'object could not be found. Please report this issue at: '
-          'https://github.com/gdelataillade/alarm/issues');
+      _log.severe(
+        'Alarm with id $alarmId started ringing but the settings '
+        'object could not be found. Please report this issue at: '
+        'https://github.com/gdelataillade/alarm/issues',
+      );
       return;
     }
     _log.info('Alarm with id $alarmId started ringing.');

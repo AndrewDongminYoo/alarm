@@ -81,9 +81,6 @@ abstract class BaseAlarm {
 
   /// Sets the native notification on app kill title and body.
   Future<void> setWarningNotificationOnKill(String title, String body) => api
-      .setWarningNotificationOnKill(
-        title: title,
-        body: body,
-      )
+      .setWarningNotificationOnKill(title: title, body: body)
       .catchError(AlarmExceptionHandlers.catchError<void>);
 }

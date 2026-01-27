@@ -116,21 +116,27 @@ class PlatformTimers {
 
   static Future<void> _alarmRang(AlarmSettings settings) async {
     if (Alarm.ringing.value.contains(settings)) {
-      _log.info('Alarm timer triggered but alarm is already marked as ringing. '
-          'Info: ${settings.toJson()}');
+      _log.info(
+        'Alarm timer triggered but alarm is already marked as ringing. '
+        'Info: ${settings.toJson()}',
+      );
       return;
     }
 
     // Give the native platform sometime to notify Flutter.
     await Future<void>.delayed(const Duration(milliseconds: 700));
     if (Alarm.ringing.value.contains(settings)) {
-      _log.info('Alarm timer triggered but native marked the alarm as ringing '
-          'shortly after. Info: ${settings.toJson()}');
+      _log.info(
+        'Alarm timer triggered but native marked the alarm as ringing '
+        'shortly after. Info: ${settings.toJson()}',
+      );
       return;
     }
 
-    _log.warning('Alarm had to be triggered manually via timer. '
-        'Info: ${settings.toJson()}');
+    _log.warning(
+      'Alarm had to be triggered manually via timer. '
+      'Info: ${settings.toJson()}',
+    );
     Alarm.alarmRang(settings);
   }
 }

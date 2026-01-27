@@ -12,5 +12,5 @@ class AndroidAlarm extends BaseAlarm {
       .disableWarningNotificationOnKill()
       .catchError(AlarmExceptionHandlers.catchError<void>);
 
-// Insert other Android platform specific code..
+  // Insert other Android platform specific code..
 }

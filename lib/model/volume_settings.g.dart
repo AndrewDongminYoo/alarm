@@ -7,31 +7,30 @@ part of 'volume_settings.dart';
 // **************************************************************************
 
 VolumeSettings _$VolumeSettingsFromJson(Map<String, dynamic> json) =>
-    $checkedCreate(
-      'VolumeSettings',
-      json,
-      ($checkedConvert) {
-        final val = VolumeSettings._(
-          volume: $checkedConvert('volume', (v) => (v as num?)?.toDouble()),
-          fadeDuration: $checkedConvert(
-              'fadeDuration',
-              (v) => v == null
-                  ? null
-                  : Duration(microseconds: (v as num).toInt())),
-          fadeSteps: $checkedConvert(
-              'fadeSteps',
-              (v) =>
-                  (v as List<dynamic>?)
-                      ?.map((e) =>
-                          VolumeFadeStep.fromJson(e as Map<String, dynamic>))
-                      .toList() ??
-                  const []),
-          volumeEnforced:
-              $checkedConvert('volumeEnforced', (v) => v as bool? ?? false),
-        );
-        return val;
-      },
-    );
+    $checkedCreate('VolumeSettings', json, ($checkedConvert) {
+      final val = VolumeSettings._(
+        volume: $checkedConvert('volume', (v) => (v as num?)?.toDouble()),
+        fadeDuration: $checkedConvert(
+          'fadeDuration',
+          (v) => v == null ? null : Duration(microseconds: (v as num).toInt()),
+        ),
+        fadeSteps: $checkedConvert(
+          'fadeSteps',
+          (v) =>
+              (v as List<dynamic>?)
+                  ?.map(
+                    (e) => VolumeFadeStep.fromJson(e as Map<String, dynamic>),
+                  )
+                  .toList() ??
+              const [],
+        ),
+        volumeEnforced: $checkedConvert(
+          'volumeEnforced',
+          (v) => v as bool? ?? false,
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$VolumeSettingsToJson(VolumeSettings instance) =>
     <String, dynamic>{
@@ -43,18 +42,16 @@ Map<String, dynamic> _$VolumeSettingsToJson(VolumeSettings instance) =>
     };
 
 VolumeFadeStep _$VolumeFadeStepFromJson(Map<String, dynamic> json) =>
-    $checkedCreate(
-      'VolumeFadeStep',
-      json,
-      ($checkedConvert) {
-        final val = VolumeFadeStep(
-          $checkedConvert(
-              'time', (v) => Duration(microseconds: (v as num).toInt())),
-          $checkedConvert('volume', (v) => (v as num).toDouble()),
-        );
-        return val;
-      },
-    );
+    $checkedCreate('VolumeFadeStep', json, ($checkedConvert) {
+      final val = VolumeFadeStep(
+        $checkedConvert(
+          'time',
+          (v) => Duration(microseconds: (v as num).toInt()),
+        ),
+        $checkedConvert('volume', (v) => (v as num).toDouble()),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$VolumeFadeStepToJson(VolumeFadeStep instance) =>
     <String, dynamic>{

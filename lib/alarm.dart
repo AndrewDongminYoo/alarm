@@ -208,17 +208,23 @@ class Alarm {
       final alarm = await getAlarm(id);
       if (alarm == null) {
         if (_scheduled.value.containsId(id)) {
-          _log.severe('Alarm with id $id was not found but was '
-              'ringing=$isRinging and marked as scheduled.');
+          _log.severe(
+            'Alarm with id $id was not found but was '
+            'ringing=$isRinging and marked as scheduled.',
+          );
         }
         if (_ringing.value.containsId(id)) {
-          _log.severe('Alarm with id $id was not found but was '
-              'ringing=$isRinging and marked as ringing.');
+          _log.severe(
+            'Alarm with id $id was not found but was '
+            'ringing=$isRinging and marked as ringing.',
+          );
         }
       } else {
         if (isRinging != _ringing.value.contains(alarm)) {
-          _log.severe('Alarm with id $id is ringing=$isRinging but was '
-              'not marked as such.');
+          _log.severe(
+            'Alarm with id $id is ringing=$isRinging but was '
+            'not marked as such.',
+          );
         }
       }
     }

@@ -42,8 +42,8 @@ class AlarmSettings extends Equatable {
       final fadeDurationSeconds = (json['fadeDuration'] as num?)?.toDouble();
       final fadeDurationMillis =
           (fadeDurationSeconds != null && fadeDurationSeconds > 0)
-              ? (fadeDurationSeconds * 1000).toInt()
-              : null;
+          ? (fadeDurationSeconds * 1000).toInt()
+          : null;
       final volumeEnforced = json['volumeEnforced'] as bool? ?? false;
 
       json['volumeSettings'] = {
@@ -189,19 +189,19 @@ class AlarmSettings extends Equatable {
 
   /// Converts to wire datatype which is used for host platform communication.
   AlarmSettingsWire toWire() => AlarmSettingsWire(
-        id: id,
-        millisecondsSinceEpoch: dateTime.millisecondsSinceEpoch,
-        assetAudioPath: assetAudioPath,
-        volumeSettings: volumeSettings.toWire(),
-        notificationSettings: notificationSettings.toWire(),
-        loopAudio: loopAudio,
-        vibrate: vibrate,
-        warningNotificationOnKill: warningNotificationOnKill,
-        androidFullScreenIntent: androidFullScreenIntent,
-        allowAlarmOverlap: allowAlarmOverlap,
-        iOSBackgroundAudio: iOSBackgroundAudio,
-        androidStopAlarmOnTermination: androidStopAlarmOnTermination,
-      );
+    id: id,
+    millisecondsSinceEpoch: dateTime.millisecondsSinceEpoch,
+    assetAudioPath: assetAudioPath,
+    volumeSettings: volumeSettings.toWire(),
+    notificationSettings: notificationSettings.toWire(),
+    loopAudio: loopAudio,
+    vibrate: vibrate,
+    warningNotificationOnKill: warningNotificationOnKill,
+    androidFullScreenIntent: androidFullScreenIntent,
+    allowAlarmOverlap: allowAlarmOverlap,
+    iOSBackgroundAudio: iOSBackgroundAudio,
+    androidStopAlarmOnTermination: androidStopAlarmOnTermination,
+  );
 
   /// Creates a copy of `AlarmSettings` but with the given fields replaced with
   /// the new values.
@@ -249,18 +249,18 @@ class AlarmSettings extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        dateTime,
-        assetAudioPath,
-        volumeSettings,
-        notificationSettings,
-        loopAudio,
-        vibrate,
-        warningNotificationOnKill,
-        androidFullScreenIntent,
-        allowAlarmOverlap,
-        iOSBackgroundAudio,
-        androidStopAlarmOnTermination,
-        payload,
-      ];
+    id,
+    dateTime,
+    assetAudioPath,
+    volumeSettings,
+    notificationSettings,
+    loopAudio,
+    vibrate,
+    warningNotificationOnKill,
+    androidFullScreenIntent,
+    allowAlarmOverlap,
+    iOSBackgroundAudio,
+    androidStopAlarmOnTermination,
+    payload,
+  ];
 }

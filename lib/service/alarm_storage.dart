@@ -36,8 +36,9 @@ class AlarmStorage {
 
     /// Reloads the shared preferences instance in the case modifications
     /// were made in the native code, after a notification action.
-    _fgbgSubscription =
-        FGBGEvents.instance.stream.listen((event) => _prefs.reload());
+    _fgbgSubscription = FGBGEvents.instance.stream.listen(
+      (event) => _prefs.reload(),
+    );
 
     _initialized = true;
   }

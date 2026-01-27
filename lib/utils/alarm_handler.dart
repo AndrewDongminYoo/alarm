@@ -19,10 +19,7 @@ extension AlarmExceptionHandlers on AlarmException {
   }
 
   /// Wraps a Exception within an AlarmException.
-  static AlarmException fromException(
-    Exception ex, [
-    StackTrace? stacktrace,
-  ]) {
+  static AlarmException fromException(Exception ex, [StackTrace? stacktrace]) {
     return AlarmException(
       AlarmErrorCode.unknown,
       message: ex.toString(),
@@ -31,10 +28,7 @@ extension AlarmExceptionHandlers on AlarmException {
   }
 
   /// Wraps a dynamic error within an AlarmException.
-  static AlarmException fromError(
-    dynamic error, [
-    StackTrace? stacktrace,
-  ]) {
+  static AlarmException fromError(dynamic error, [StackTrace? stacktrace]) {
     if (error is AlarmException) {
       return error;
     }
