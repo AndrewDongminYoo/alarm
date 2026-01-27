@@ -1,6 +1,9 @@
+// 🐦 Flutter imports:
+import 'package:flutter/services.dart';
+
+// 🌎 Project imports:
 import 'package:alarm/src/generated/platform_bindings.g.dart';
 import 'package:alarm/utils/alarm_exception.dart';
-import 'package:flutter/services.dart';
 
 /// Handlers for parsing runtime exceptions as an AlarmException.
 extension AlarmExceptionHandlers on AlarmException {

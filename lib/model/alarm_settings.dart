@@ -1,8 +1,12 @@
-import 'package:alarm/alarm.dart';
-import 'package:alarm/src/generated/platform_bindings.g.dart';
+// 📦 Package imports:
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logging/logging.dart';
+
+// 🌎 Project imports:
+import 'package:alarm/model/notification_settings.dart';
+import 'package:alarm/model/volume_settings.dart';
+import 'package:alarm/src/generated/platform_bindings.g.dart';
 
 part 'alarm_settings.g.dart';
 

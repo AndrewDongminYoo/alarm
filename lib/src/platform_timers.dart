@@ -1,11 +1,16 @@
+// 🎯 Dart imports:
 import 'dart:async';
 import 'dart:io';
 
-import 'package:alarm/alarm.dart';
-import 'package:alarm/src/android_alarm.dart';
-import 'package:alarm/src/ios_alarm.dart';
+// 📦 Package imports:
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:logging/logging.dart';
+
+// 🌎 Project imports:
+import 'package:alarm/alarm.dart' show Alarm;
+import 'package:alarm/model/alarm_settings.dart';
+import 'package:alarm/src/android_alarm.dart';
+import 'package:alarm/src/ios_alarm.dart';
 
 /// Fallback logic for platform alarm triggering (iOS and Android).
 class PlatformTimers {
@@ -110,7 +115,7 @@ class PlatformTimers {
   /// Disposes alarm timer and FGBG subscription.
   static void _disposeAlarm(int id) {
     _disposeTimer(id);
-    _fgbgSubscriptions[id]?.cancel();
+    unawaited(_fgbgSubscriptions[id]?.cancel());
     _fgbgSubscriptions.removeWhere((key, value) => key == id);
   }
 

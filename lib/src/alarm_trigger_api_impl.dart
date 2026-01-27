@@ -1,6 +1,10 @@
-import 'package:alarm/alarm.dart';
-import 'package:alarm/src/generated/platform_bindings.g.dart';
+// 📦 Package imports:
 import 'package:logging/logging.dart';
+
+// 🌎 Project imports:
+import 'package:alarm/alarm.dart' show Alarm;
+import 'package:alarm/model/alarm_settings.dart';
+import 'package:alarm/src/generated/platform_bindings.g.dart';
 
 /// Callback that is called when an alarm starts ringing.
 typedef AlarmRangCallback = void Function(AlarmSettings alarm);

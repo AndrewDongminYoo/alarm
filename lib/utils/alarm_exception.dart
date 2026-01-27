@@ -1,3 +1,4 @@
+// 🌎 Project imports:
 import 'package:alarm/src/generated/platform_bindings.g.dart';
 
 /// Custom exception for the alarm.

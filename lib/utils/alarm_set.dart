@@ -1,8 +1,12 @@
+// 🎯 Dart imports:
 import 'dart:collection';
 
-import 'package:alarm/model/alarm_settings.dart';
+// 📦 Package imports:
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+
+// 🌎 Project imports:
+import 'package:alarm/model/alarm_settings.dart';
 
 /// A set of alarms where uniqueness is determined by the [AlarmSettings.id].
 class AlarmSet extends Equatable {

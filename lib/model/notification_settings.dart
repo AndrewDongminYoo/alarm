@@ -1,8 +1,12 @@
+// 🎯 Dart imports:
 import 'dart:ui';
 
-import 'package:alarm/src/generated/platform_bindings.g.dart';
+// 📦 Package imports:
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+// 🌎 Project imports:
+import 'package:alarm/src/generated/platform_bindings.g.dart';
 
 part 'notification_settings.g.dart';
 

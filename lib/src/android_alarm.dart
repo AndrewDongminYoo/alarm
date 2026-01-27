@@ -1,6 +1,9 @@
+// 📦 Package imports:
+import 'package:logging/logging.dart';
+
+// 🌎 Project imports:
 import 'package:alarm/src/base_alarm.dart';
 import 'package:alarm/utils/alarm_handler.dart';
-import 'package:logging/logging.dart';
 
 /// Uses method channel to interact with the native platform for Android.
 class AndroidAlarm extends BaseAlarm {

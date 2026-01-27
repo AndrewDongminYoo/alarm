@@ -1,6 +1,9 @@
-import 'package:alarm/src/generated/platform_bindings.g.dart';
+// 📦 Package imports:
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+// 🌎 Project imports:
+import 'package:alarm/src/generated/platform_bindings.g.dart';
 
 part 'volume_settings.g.dart';
 

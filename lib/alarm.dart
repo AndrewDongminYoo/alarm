@@ -1,8 +1,17 @@
 // Ignoring deperecated member use for backwards compatibility.
 // ignore_for_file: deprecated_member_use_from_same_package
 
+// 🎯 Dart imports:
 import 'dart:async';
 
+// 🐦 Flutter imports:
+import 'package:flutter/foundation.dart';
+
+// 📦 Package imports:
+import 'package:logging/logging.dart';
+import 'package:rxdart/rxdart.dart';
+
+// 🌎 Project imports:
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:alarm/service/alarm_storage.dart';
 import 'package:alarm/src/alarm_trigger_api_impl.dart';
@@ -12,9 +21,6 @@ import 'package:alarm/src/ios_alarm.dart';
 import 'package:alarm/utils/alarm_exception.dart';
 import 'package:alarm/utils/alarm_set.dart';
 import 'package:alarm/utils/extensions.dart';
-import 'package:flutter/foundation.dart';
-import 'package:logging/logging.dart';
-import 'package:rxdart/rxdart.dart';
 
 export 'package:alarm/model/alarm_settings.dart';
 export 'package:alarm/model/notification_settings.dart';

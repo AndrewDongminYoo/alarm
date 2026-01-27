@@ -4,3 +4,4 @@ analyzer:
   exclude: [lib/src/generated/**, lib/**/*.g.dart]
   errors:
     todo: ignore
+    directives_ordering: ignore

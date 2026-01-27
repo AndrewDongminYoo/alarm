@@ -1,9 +1,13 @@
+// 🎯 Dart imports:
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:alarm/model/alarm_settings.dart';
+// 📦 Package imports:
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+// 🌎 Project imports:
+import 'package:alarm/model/alarm_settings.dart';
 
 /// Class that handles the local storage of the alarm info.
 class AlarmStorage {
@@ -112,6 +116,6 @@ class AlarmStorage {
 
   /// Dispose the fgbg subscription to avoid memory leaks.
   static void dispose() {
-    _fgbgSubscription.cancel();
+    unawaited(_fgbgSubscription.cancel());
   }
 }

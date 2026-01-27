@@ -1,11 +1,16 @@
+// 🎯 Dart imports:
 import 'dart:async';
 
-import 'package:alarm/alarm.dart';
+// 📦 Package imports:
+import 'package:logging/logging.dart';
+
+// 🌎 Project imports:
+import 'package:alarm/alarm.dart' show Alarm;
+import 'package:alarm/model/alarm_settings.dart';
 import 'package:alarm/src/generated/platform_bindings.g.dart';
 import 'package:alarm/src/platform_timers.dart';
 import 'package:alarm/utils/alarm_exception.dart';
 import 'package:alarm/utils/alarm_handler.dart';
-import 'package:logging/logging.dart';
 
 /// Abstract base class for platform-specific alarm interactions.
 /// Contains common logic shared between iOS and Android.
