@@ -3,7 +3,9 @@
 If you are using a plugin version below `3.0.0`, follow [these installation steps](https://github.com/gdelataillade/alarm/blob/a2b736807e03ae1f3a60f234ad0b4f686ac59520/help/INSTALL-ANDROID.md) instead.
 
 ## Step 1
+
 In your `android/app/build.gradle`, make sure you have the following config:
+
 ```Gradle
 android {
   compileSdkVersion 34
@@ -17,7 +19,9 @@ android {
 ```
 
 ## Step 2
+
 In your `android/settings.gradle`, ensure you have the following Kotlin plugin configuration:
+
 ```Gradle
 plugins {
     id "org.jetbrains.kotlin.android" version "1.9.0" apply false  // Must be at least 1.9.0
@@ -25,6 +29,7 @@ plugins {
 ```
 
 ## Step 3
+
 Then, add the following permissions to your `AndroidManifest.xml` within the `<manifest></manifest>` tags:
 
 ```xml
@@ -44,6 +49,7 @@ Then, add the following permissions to your `AndroidManifest.xml` within the `<m
 See more details on Android permissions [here](https://developer.android.com/reference/android/Manifest.permission).
 
 **Note:** If you are migrating from a version below `5.0.0`, you can remove the following block, which was previously necessary for displaying full-screen notifications:
+
 ```xml
 <activity
     android:showWhenLocked="true"
@@ -51,7 +57,9 @@ See more details on Android permissions [here](https://developer.android.com/ref
 ```
 
 ## Step 4
+
 Inside the <application> tag of your `AndroidManifest.xml`, add the following declarations (if you need notification-on-kill feature):
+
 ```xml
 <application>
   [...]
@@ -63,6 +71,7 @@ Inside the <application> tag of your `AndroidManifest.xml`, add the following de
 Necessary if you want to enable an optional notification with `Alarm.setWarningNotificationOnKill` to alert users if the app is terminated, hinting at a rare chance the alarm may not work.
 
 ## Step 5
+
 To guarantee that your alarm's foreground service can trigger when the app is in the background, it's recommanded to verify and request the necessary permission for scheduling exact alarms on Android 12+ devices. This step is particularly important due to varying device policies.
 
 Leverage the [permission_handler](https://pub.dev/packages/permission_handler) package to check and request this permission seamlessly within your Flutter application. Here's an example to integrate into your code:
@@ -80,9 +89,11 @@ Future<void> checkAndroidScheduleExactAlarmPermission() async {
 ```
 
 ## Step 6
+
 If you want to use the `androidFullScreenIntent` feature, some OEM (Samsung, Honor, Huawei, Xiaomi, Oppo, Asus, etc...) will require to grant the [auto_start_flutter](https://pub.dev/packages/auto_start_flutter) permission.
 
 ## Additional Resources
+
 For a practical implementation example, you can refer to the example's Android manifest & build.gradle in the plugin repository. This might help you better understand the setup and integration:
 
 [Schedule exact alarm permission check](https://github.com/gdelataillade/alarm/blob/main/example/lib/screens/home.dart)
