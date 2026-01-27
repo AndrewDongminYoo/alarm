@@ -57,7 +57,7 @@ class VibrationManager: NSObject {
         os_log(.debug, log: VibrationManager.logger, "Vibration stopped.")
     }
 
-    @objc private func vibrationTimerFired(_ timer: Timer) {
+    @objc private func vibrationTimerFired(_: Timer) {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }
 }

@@ -19,24 +19,24 @@ class AlarmRingManager: NSObject {
     func start(registrar: FlutterPluginRegistrar, assetAudioPath: String?, loopAudio: Bool, volumeSettings: VolumeSettings, onComplete: (() -> Void)?) async {
         let start = Date()
 
-        self.duckOtherAudios()
+        duckOtherAudios()
 
         let targetSystemVolume: Float
         if let systemVolume = volumeSettings.volume.map({ Float($0) }) {
             targetSystemVolume = systemVolume
-            self.previousVolume = await self.setSystemVolume(volume: systemVolume)
+            previousVolume = await setSystemVolume(volume: systemVolume)
         } else {
-            targetSystemVolume = self.getSystemVolume()
+            targetSystemVolume = getSystemVolume()
         }
 
         if volumeSettings.volumeEnforced {
-            self.volumeEnforcementTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            volumeEnforcementTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 AlarmRingManager.shared.enforcementTimerTriggered(targetSystemVolume: targetSystemVolume)
             }
         }
 
-        guard let audioPlayer = self.loadAudioPlayer(registrar: registrar, assetAudioPath: assetAudioPath) else {
-            await self.stop()
+        guard let audioPlayer = loadAudioPlayer(registrar: registrar, assetAudioPath: assetAudioPath) else {
+            await stop()
             return
         }
 
@@ -50,9 +50,9 @@ class AlarmRingManager: NSObject {
         self.audioPlayer = audioPlayer
 
         if !volumeSettings.fadeSteps.isEmpty {
-            self.fadeVolume(steps: volumeSettings.fadeSteps)
+            fadeVolume(steps: volumeSettings.fadeSteps)
         } else if let fadeDuration = volumeSettings.fadeDuration {
-            self.fadeVolume(steps: [VolumeFadeStep(time: 0, volume: 0), VolumeFadeStep(time: fadeDuration, volume: 1.0)])
+            fadeVolume(steps: [VolumeFadeStep(time: 0, volume: 0), VolumeFadeStep(time: fadeDuration, volume: 1.0)])
         } else {
             audioPlayer.volume = 1.0
         }
@@ -69,25 +69,25 @@ class AlarmRingManager: NSObject {
     }
 
     func stop() async {
-        if self.volumeEnforcementTimer == nil && self.previousVolume == nil && self.audioPlayer == nil {
+        if volumeEnforcementTimer == nil && previousVolume == nil && audioPlayer == nil {
             os_log(.debug, log: AlarmRingManager.logger, "Alarm ringer already stopped.")
             return
         }
 
         let start = Date()
 
-        self.mixOtherAudios()
+        mixOtherAudios()
 
-        self.volumeEnforcementTimer?.invalidate()
-        self.volumeEnforcementTimer = nil
+        volumeEnforcementTimer?.invalidate()
+        volumeEnforcementTimer = nil
 
-        if let previousVolume = self.previousVolume {
-            await self.setSystemVolume(volume: previousVolume)
+        if let previousVolume = previousVolume {
+            await setSystemVolume(volume: previousVolume)
             self.previousVolume = nil
         }
 
-        self.audioPlayer?.stop()
-        self.audioPlayer = nil
+        audioPlayer?.stop()
+        audioPlayer = nil
 
         let runDuration = Date().timeIntervalSince(start)
         os_log(.debug, log: AlarmRingManager.logger, "Alarm ring stopped in %.2fs.", runDuration)
@@ -175,7 +175,8 @@ class AlarmRingManager: NSObject {
             let bundle = Bundle(for: Self.self)
             guard let bundleURL = bundle.url(forResource: "alarm", withExtension: "bundle"),
                   let resourceBundle = Bundle(url: bundleURL),
-                  let audioPath = resourceBundle.path(forResource: "default", ofType: "m4a") else {
+                  let audioPath = resourceBundle.path(forResource: "default", ofType: "m4a")
+            else {
                 os_log(.error, log: AlarmRingManager.logger, "Default alarm sound 'default.m4a' not found in alarm.bundle")
                 return nil
             }
@@ -194,7 +195,7 @@ class AlarmRingManager: NSObject {
     }
 
     private func fadeVolume(steps: [VolumeFadeStep]) {
-        guard let audioPlayer = self.audioPlayer else {
+        guard let audioPlayer = audioPlayer else {
             os_log(.error, log: AlarmRingManager.logger, "Cannot fade volume because audioPlayer is nil.")
             return
         }

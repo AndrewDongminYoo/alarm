@@ -127,7 +127,7 @@ class NotificationManager: NSObject {
                 switch result {
                 case .success:
                     break
-                case .failure(let error):
+                case let .failure(error):
                     os_log(.error, log: NotificationManager.logger, "Failed to stop alarm %d: %@", id, error.localizedDescription)
                 }
             })
@@ -144,7 +144,7 @@ class NotificationManager: NSObject {
         return content.userInfo[NotificationManager.userInfoAlarmIdKey] != nil
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    func userNotificationCenter(_: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         if !isAlarmNotification(response.notification) {
             return
         }
@@ -152,7 +152,7 @@ class NotificationManager: NSObject {
         completionHandler()
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func userNotificationCenter(_: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if !isAlarmNotification(notification) {
             return
         }

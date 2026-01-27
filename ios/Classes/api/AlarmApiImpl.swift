@@ -9,7 +9,7 @@ public class AlarmApiImpl: NSObject, AlarmApi {
 
     init(registrar: FlutterPluginRegistrar) {
         self.registrar = registrar
-        self.manager = AlarmManager(registrar: registrar)
+        manager = AlarmManager(registrar: registrar)
     }
 
     func setAlarm(alarmSettings: AlarmSettingsWire, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -37,7 +37,7 @@ public class AlarmApiImpl: NSObject, AlarmApi {
     }
 
     func isRinging(alarmId: Int64?) throws -> Bool {
-        return self.manager.isRinging(id: alarmId.map { Int(truncatingIfNeeded: $0) })
+        return manager.isRinging(id: alarmId.map { Int(truncatingIfNeeded: $0) })
     }
 
     func setWarningNotificationOnKill(title: String, body: String) throws {
@@ -48,11 +48,12 @@ public class AlarmApiImpl: NSObject, AlarmApi {
         throw PigeonError(
             code: String(AlarmErrorCode.pluginInternal.rawValue),
             message: "Method disableWarningNotificationOnKill not implemented.",
-            details: nil)
+            details: nil
+        )
     }
 
     func appRefresh() async {
-        BackgroundAudioManager.shared.refresh(registrar: self.registrar)
-        await self.manager.checkAlarms()
+        BackgroundAudioManager.shared.refresh(registrar: registrar)
+        await manager.checkAlarms()
     }
 }

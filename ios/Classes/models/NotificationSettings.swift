@@ -27,7 +27,7 @@ struct NotificationSettings: Codable {
         return [
             "title": notificationSettings.title,
             "body": notificationSettings.body,
-            "stopButton": notificationSettings.stopButton as Any
+            "stopButton": notificationSettings.stopButton as Any,
         ]
     }
 }

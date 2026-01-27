@@ -10,10 +10,10 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
     private var alarmTriggerApi: AlarmTriggerApi? = nil
 
     init(registrar: FlutterPluginRegistrar) {
-        self.api = AlarmApiImpl(registrar: registrar)
+        api = AlarmApiImpl(registrar: registrar)
         AlarmApiSetup.setUp(binaryMessenger: registrar.messenger(), api: api)
         os_log(.info, log: SwiftAlarmPlugin.logger, "AlarmApi initialized.")
-        self.alarmTriggerApi = AlarmTriggerApi(binaryMessenger: registrar.messenger())
+        alarmTriggerApi = AlarmTriggerApi(binaryMessenger: registrar.messenger())
         os_log(.info, log: SwiftAlarmPlugin.logger, "AlarmTriggerApi connected.")
     }
 

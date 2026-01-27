@@ -21,6 +21,7 @@ lint:
     - markdownlint
     - dart
   enabled:
+    - swiftformat@0.55.5
     - actionlint@1.7.10
     - checkov@3.2.499
     - git-diff-check

@@ -35,7 +35,7 @@ struct AlarmSettings: Codable {
 
         // Backward compatibility for `allowAlarmOverlap`
         allowAlarmOverlap = try container.decodeIfPresent(Bool.self, forKey: .allowAlarmOverlap) ?? false
-        
+
         // Backward compatibility for `iOSBackgroundAudio`
         iOSBackgroundAudio = try container.decodeIfPresent(Bool.self, forKey: .iOSBackgroundAudio) ?? true
 
@@ -106,7 +106,7 @@ struct AlarmSettings: Codable {
     static func from(wire: AlarmSettingsWire) -> AlarmSettings {
         return AlarmSettings(
             id: Int(truncatingIfNeeded: wire.id),
-            dateTime: Date(timeIntervalSince1970: TimeInterval(wire.millisecondsSinceEpoch / 1_000)),
+            dateTime: Date(timeIntervalSince1970: TimeInterval(wire.millisecondsSinceEpoch / 1000)),
             assetAudioPath: wire.assetAudioPath,
             volumeSettings: VolumeSettings.from(wire: wire.volumeSettings),
             notificationSettings: NotificationSettings.from(wire: wire.notificationSettings),

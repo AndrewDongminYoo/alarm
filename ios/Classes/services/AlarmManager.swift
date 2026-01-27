@@ -14,27 +14,27 @@ class AlarmManager: NSObject {
     }
 
     func setAlarm(alarmSettings: AlarmSettings) async {
-        if self.alarms.keys.contains(alarmSettings.id) {
+        if alarms.keys.contains(alarmSettings.id) {
             os_log(.info, log: AlarmManager.logger, "Stopping alarm with identical ID=%d before scheduling a new one.", alarmSettings.id)
-            await self.stopAlarm(id: alarmSettings.id, cancelNotif: true)
+            await stopAlarm(id: alarmSettings.id, cancelNotif: true)
         }
 
         let config = AlarmConfiguration(settings: alarmSettings)
-        self.alarms[alarmSettings.id] = config
+        alarms[alarmSettings.id] = config
 
         let delayInSeconds = alarmSettings.dateTime.timeIntervalSinceNow
         let ringImmediately = delayInSeconds < 1
         if !ringImmediately {
             let timer = Timer(timeInterval: delayInSeconds,
                               target: self,
-                              selector: #selector(self.alarmTimerTrigerred(_:)),
+                              selector: #selector(alarmTimerTrigerred(_:)),
                               userInfo: alarmSettings.id,
                               repeats: false)
             RunLoop.main.add(timer, forMode: .common)
             config.timer = timer
         }
 
-        self.updateState()
+        updateState()
 
         if ringImmediately {
             os_log(.info, log: AlarmManager.logger, "Ringing alarm ID=%d immediately.", alarmSettings.id)
@@ -55,15 +55,15 @@ class AlarmManager: NSObject {
 
         await AlarmRingManager.shared.stop()
 
-        if let config = self.alarms[id] {
+        if let config = alarms[id] {
             config.timer?.invalidate()
             config.timer = nil
-            self.alarms.removeValue(forKey: id)
+            alarms.removeValue(forKey: id)
         }
 
-        self.updateState()
+        updateState()
 
-        await self.notifyAlarmStopped(id: id)
+        await notifyAlarmStopped(id: id)
 
         os_log(.info, log: AlarmManager.logger, "Stop alarm for ID=%d complete.", id)
     }
@@ -73,14 +73,14 @@ class AlarmManager: NSObject {
 
         await AlarmRingManager.shared.stop()
 
-        let alarmIds = Array(self.alarms.keys)
-        self.alarms.forEach { $0.value.timer?.invalidate() }
-        self.alarms.removeAll()
+        let alarmIds = Array(alarms.keys)
+        alarms.forEach { $0.value.timer?.invalidate() }
+        alarms.removeAll()
 
-        self.updateState()
+        updateState()
 
         for alarmId in alarmIds {
-            await self.notifyAlarmStopped(id: alarmId)
+            await notifyAlarmStopped(id: alarmId)
         }
 
         os_log(.info, log: AlarmManager.logger, "Stop all complete.")
@@ -88,15 +88,15 @@ class AlarmManager: NSObject {
 
     func isRinging(id: Int? = nil) -> Bool {
         guard let alarmId = id else {
-            return self.alarms.values.contains(where: { $0.state == .ringing })
+            return alarms.values.contains(where: { $0.state == .ringing })
         }
-        return self.alarms[alarmId]?.state == .ringing
+        return alarms[alarmId]?.state == .ringing
     }
 
     /// Ensures all alarm timers are valid and reschedules them if not.
     func checkAlarms() async {
         var rescheduled = 0
-        for (id, config) in self.alarms {
+        for (id, config) in alarms {
             if config.state == .ringing || config.timer?.isValid ?? false {
                 continue
             }
@@ -108,18 +108,18 @@ class AlarmManager: NSObject {
 
             let delayInSeconds = config.settings.dateTime.timeIntervalSinceNow
             if delayInSeconds <= 0 {
-                await self.ringAlarm(id: id)
+                await ringAlarm(id: id)
                 continue
             }
             if delayInSeconds < 1 {
                 try? await Task.sleep(nanoseconds: UInt64(delayInSeconds * 1_000_000_000))
-                await self.ringAlarm(id: id)
+                await ringAlarm(id: id)
                 continue
             }
 
             let timer = Timer(timeInterval: delayInSeconds,
                               target: self,
-                              selector: #selector(self.alarmTimerTrigerred(_:)),
+                              selector: #selector(alarmTimerTrigerred(_:)),
                               userInfo: config.settings.id,
                               repeats: false)
             RunLoop.main.add(timer, forMode: .common)
@@ -140,14 +140,14 @@ class AlarmManager: NSObject {
     }
 
     private func ringAlarm(id: Int) async {
-        guard let config = self.alarms[id] else {
+        guard let config = alarms[id] else {
             os_log(.error, log: AlarmManager.logger, "Alarm %d was not found and cannot be rung.", id)
             return
         }
 
-        if !config.settings.allowAlarmOverlap && self.alarms.contains(where: { $1.state == .ringing }) {
+        if !config.settings.allowAlarmOverlap && alarms.contains(where: { $1.state == .ringing }) {
             os_log(.error, log: AlarmManager.logger, "Ignoring alarm with id %d because another alarm is already ringing.", id)
-            await self.stopAlarm(id: id, cancelNotif: true)
+            await stopAlarm(id: id, cancelNotif: true)
             return
         }
 
@@ -168,7 +168,7 @@ class AlarmManager: NSObject {
         BackgroundAudioManager.shared.stop()
 
         await AlarmRingManager.shared.start(
-            registrar: self.registrar,
+            registrar: registrar,
             assetAudioPath: config.settings.assetAudioPath,
             loopAudio: config.settings.loopAudio,
             volumeSettings: config.settings.volumeSettings,
@@ -176,11 +176,12 @@ class AlarmManager: NSObject {
                 Task {
                     [self] in await self?.stopAlarm(id: id, cancelNotif: false)
                 }
-            } : nil)
+            } : nil
+        )
 
-        self.updateState()
+        updateState()
 
-        await self.notifyAlarmRang(id: id)
+        await notifyAlarmRang(id: id)
 
         os_log(.info, log: AlarmManager.logger, "Ring alarm for ID=%d complete.", id)
     }
@@ -230,25 +231,25 @@ class AlarmManager: NSObject {
     }
 
     private func updateState() {
-        if self.alarms.contains(where: { $1.state == .scheduled && $1.settings.warningNotificationOnKill }) {
+        if alarms.contains(where: { $1.state == .scheduled && $1.settings.warningNotificationOnKill }) {
             AppTerminateManager.shared.startMonitoring()
         } else {
             AppTerminateManager.shared.stopMonitoring()
         }
 
-        if !self.alarms.contains(where: { $1.state == .ringing }) && self.alarms.contains(where: { $1.state == .scheduled && $1.settings.iOSBackgroundAudio }) {
-            BackgroundAudioManager.shared.start(registrar: self.registrar)
+        if !alarms.contains(where: { $1.state == .ringing }) && alarms.contains(where: { $1.state == .scheduled && $1.settings.iOSBackgroundAudio }) {
+            BackgroundAudioManager.shared.start(registrar: registrar)
         } else {
             BackgroundAudioManager.shared.stop()
         }
 
-        if self.alarms.contains(where: { $1.state == .scheduled }) {
+        if alarms.contains(where: { $1.state == .scheduled }) {
             BackgroundTaskManager.enable()
         } else {
             BackgroundTaskManager.disable()
         }
 
-        if self.alarms.contains(where: { $1.state == .ringing && $1.settings.vibrate }) {
+        if alarms.contains(where: { $1.state == .ringing && $1.settings.vibrate }) {
             VibrationManager.shared.start()
         } else {
             VibrationManager.shared.stop()

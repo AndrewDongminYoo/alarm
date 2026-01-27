@@ -15,7 +15,7 @@ class BackgroundAudioManager: NSObject {
     }
 
     func start(registrar: FlutterPluginRegistrar) {
-        if self.silentAudioPlayer != nil {
+        if silentAudioPlayer != nil {
             os_log(.debug, log: BackgroundAudioManager.logger, "Silent player already running.")
             return
         }
@@ -35,38 +35,38 @@ class BackgroundAudioManager: NSObject {
             return
         }
 
-        self.mixOtherAudios()
+        mixOtherAudios()
         player.numberOfLoops = -1
         player.volume = 0.01
         player.play()
-        self.silentAudioPlayer = player
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleInterruption), name: AVAudioSession.interruptionNotification, object: nil)
+        silentAudioPlayer = player
+        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: nil)
 
         os_log(.debug, log: BackgroundAudioManager.logger, "Started silent player.")
     }
 
     func refresh(registrar: FlutterPluginRegistrar) {
-        guard let player = self.silentAudioPlayer else {
+        guard let player = silentAudioPlayer else {
             os_log(.debug, log: BackgroundAudioManager.logger, "Cannot refresh silent player since it's not running. Starting it.")
-            self.start(registrar: registrar)
+            start(registrar: registrar)
             return
         }
 
-        self.mixOtherAudios()
+        mixOtherAudios()
         player.pause()
         player.play()
         os_log(.debug, log: BackgroundAudioManager.logger, "Refreshed silent player.")
     }
 
     func stop() {
-        guard let player = self.silentAudioPlayer else {
+        guard let player = silentAudioPlayer else {
             os_log(.debug, log: BackgroundAudioManager.logger, "Silent player already stopped.")
             return
         }
 
         NotificationCenter.default.removeObserver(self, name: AVAudioSession.interruptionNotification, object: nil)
         player.stop()
-        self.silentAudioPlayer = nil
+        silentAudioPlayer = nil
         os_log(.debug, log: BackgroundAudioManager.logger, "Stopped silent player.")
     }
 
@@ -90,14 +90,14 @@ class BackgroundAudioManager: NSObject {
         }
 
         switch type {
-            case .began:
-                os_log(.debug, log: BackgroundAudioManager.logger, "Interruption began.")
-                self.silentAudioPlayer?.play()
-            case .ended:
-                os_log(.debug, log: BackgroundAudioManager.logger, "Interruption ended.")
-                self.silentAudioPlayer?.play()
-            default:
-                break
+        case .began:
+            os_log(.debug, log: BackgroundAudioManager.logger, "Interruption began.")
+            silentAudioPlayer?.play()
+        case .ended:
+            os_log(.debug, log: BackgroundAudioManager.logger, "Interruption ended.")
+            silentAudioPlayer?.play()
+        default:
+            break
         }
     }
 }
