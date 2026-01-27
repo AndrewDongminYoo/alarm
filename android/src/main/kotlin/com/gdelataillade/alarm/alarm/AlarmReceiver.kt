@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-
 import io.flutter.Log
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -14,12 +13,15 @@ class AlarmReceiver : BroadcastReceiver() {
         const val EXTRA_ALARM_ACTION = "EXTRA_ALARM_ACTION"
     }
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(
+        context: Context,
+        intent: Intent,
+    ) {
         val action = intent.action
 
-        /// Stop alarm from notification stop button.
+        // / Stop alarm from notification stop button.
         if (action == ACTION_ALARM_STOP) {
-            val id = intent.getIntExtra("id", 0) 
+            val id = intent.getIntExtra("id", 0)
             Log.d("AlarmReceiver", "Received stop alarm command from notification, id: $id")
             AlarmService.instance?.let {
                 it.handleStopAlarmCommand(id)
@@ -32,12 +34,13 @@ class AlarmReceiver : BroadcastReceiver() {
         serviceIntent.putExtras(intent)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val pendingIntent = PendingIntent.getForegroundService(
-                context,
-                1,
-                serviceIntent,
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            )
+            val pendingIntent =
+                PendingIntent.getForegroundService(
+                    context,
+                    1,
+                    serviceIntent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                )
             pendingIntent.send()
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent)

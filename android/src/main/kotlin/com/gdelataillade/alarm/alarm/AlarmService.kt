@@ -1,24 +1,23 @@
 package com.gdelataillade.alarm.alarm
 
-import com.gdelataillade.alarm.services.AudioService
-import com.gdelataillade.alarm.services.AlarmStorage
-import com.gdelataillade.alarm.services.VibrationService
-import com.gdelataillade.alarm.services.VolumeService
-
-import android.app.Service
-import android.app.PendingIntent
 import android.app.ForegroundServiceStartNotAllowedException
 import android.app.Notification
-import android.content.Intent
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
-import android.os.Build
 import com.gdelataillade.alarm.models.AlarmSettings
 import com.gdelataillade.alarm.services.AlarmRingingLiveData
+import com.gdelataillade.alarm.services.AlarmStorage
+import com.gdelataillade.alarm.services.AudioService
 import com.gdelataillade.alarm.services.NotificationHandler
 import com.gdelataillade.alarm.services.NotificationOnKillService
+import com.gdelataillade.alarm.services.VibrationService
+import com.gdelataillade.alarm.services.VolumeService
 import io.flutter.Log
 import kotlinx.serialization.json.Json
 
@@ -50,7 +49,11 @@ class AlarmService : Service() {
         alarmStorage = AlarmStorage(this)
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(
+        intent: Intent?,
+        flags: Int,
+        startId: Int,
+    ): Int {
         if (intent == null) {
             stopSelf()
             return START_NOT_STICKY
@@ -69,12 +72,13 @@ class AlarmService : Service() {
         val notificationHandler = NotificationHandler(this)
         val appIntent =
             applicationContext.packageManager.getLaunchIntentForPackage(applicationContext.packageName)
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            id,
-            appIntent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        val pendingIntent =
+            PendingIntent.getActivity(
+                this,
+                id,
+                appIntent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
 
         val alarmSettingsJson = intent.getStringExtra("alarmSettings")
         if (alarmSettingsJson == null) {
@@ -92,12 +96,13 @@ class AlarmService : Service() {
             return START_NOT_STICKY
         }
 
-        val notification = notificationHandler.buildNotification(
-            alarmSettings.notificationSettings,
-            alarmSettings.androidFullScreenIntent,
-            pendingIntent,
-            id
-        )
+        val notification =
+            notificationHandler.buildNotification(
+                alarmSettings.notificationSettings,
+                alarmSettings.androidFullScreenIntent,
+                pendingIntent,
+                id,
+            )
 
         // Start the service in the foreground
         try {
@@ -141,7 +146,7 @@ class AlarmService : Service() {
             volumeService?.setVolume(
                 alarmSettings.volumeSettings.volume,
                 alarmSettings.volumeSettings.volumeEnforced,
-                showSystemUI
+                showSystemUI,
             )
         }
 
@@ -163,7 +168,7 @@ class AlarmService : Service() {
             alarmSettings.assetAudioPath,
             alarmSettings.loopAudio,
             alarmSettings.volumeSettings.fadeDuration,
-            alarmSettings.volumeSettings.fadeSteps
+            alarmSettings.volumeSettings.fadeSteps,
         )
 
         // Update the list of ringing alarms
@@ -178,8 +183,9 @@ class AlarmService : Service() {
         shouldStopAlarmOnTermination = alarmSettings.androidStopAlarmOnTermination
 
         // Acquire a wake lock to wake up the device
-        val wakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager)
-            .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "app:AlarmWakelockTag")
+        val wakeLock =
+            (getSystemService(Context.POWER_SERVICE) as PowerManager)
+                .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "app:AlarmWakelockTag")
         wakeLock.acquire(5 * 60 * 1000L) // Acquire for 5 minutes
 
         // If there are no other alarms scheduled, turn off the warning notification.
@@ -209,16 +215,19 @@ class AlarmService : Service() {
         } else {
             Log.d(TAG, "Keeping alarm running as androidStopAlarmOnTermination is false.")
         }
-        
+
         super.onTaskRemoved(rootIntent)
     }
 
-    private fun startAlarmService(id: Int, notification: Notification) {
+    private fun startAlarmService(
+        id: Int,
+        notification: Notification,
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             startForeground(
                 id,
                 notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK,
             )
         } else {
             startForeground(id, notification)

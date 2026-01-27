@@ -11,31 +11,29 @@ data class VolumeSettings(
     val volume: Double?,
     val fadeDuration: Duration?,
     val fadeSteps: List<VolumeFadeStep>,
-    val volumeEnforced: Boolean
+    val volumeEnforced: Boolean,
 ) {
     companion object {
-        fun fromWire(e: VolumeSettingsWire): VolumeSettings {
-            return VolumeSettings(
+        fun fromWire(e: VolumeSettingsWire): VolumeSettings =
+            VolumeSettings(
                 e.volume,
                 e.fadeDurationMillis?.milliseconds,
                 e.fadeSteps.map { VolumeFadeStep.fromWire(it) },
                 e.volumeEnforced,
             )
-        }
     }
 }
 
 @Serializable
 data class VolumeFadeStep(
     val time: Duration,
-    val volume: Double
+    val volume: Double,
 ) {
     companion object {
-        fun fromWire(e: VolumeFadeStepWire): VolumeFadeStep {
-            return VolumeFadeStep(
+        fun fromWire(e: VolumeFadeStepWire): VolumeFadeStep =
+            VolumeFadeStep(
                 e.timeMillis.milliseconds,
                 e.volume,
             )
-        }
     }
 }

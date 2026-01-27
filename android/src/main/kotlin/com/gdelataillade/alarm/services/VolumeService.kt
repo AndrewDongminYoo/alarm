@@ -1,16 +1,18 @@
 package com.gdelataillade.alarm.services
 
 import android.content.Context
-import android.media.AudioManager
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
+import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import kotlin.math.round
 import io.flutter.Log
+import kotlin.math.round
 
-class VolumeService(context: Context) {
+class VolumeService(
+    context: Context,
+) {
     companion object {
         private const val TAG = "VolumeService"
     }
@@ -22,14 +24,18 @@ class VolumeService(context: Context) {
     private var targetVolume: Int = 0
     private var volumeCheckRunnable: Runnable? = null
 
-    fun setVolume(volume: Double, volumeEnforced: Boolean, showSystemUI: Boolean) {
+    fun setVolume(
+        volume: Double,
+        volumeEnforced: Boolean,
+        showSystemUI: Boolean,
+    ) {
         val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         previousVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
         targetVolume = (round(volume * maxVolume)).toInt()
         audioManager.setStreamVolume(
             AudioManager.STREAM_MUSIC,
             targetVolume,
-            if (showSystemUI) AudioManager.FLAG_SHOW_UI else 0
+            if (showSystemUI) AudioManager.FLAG_SHOW_UI else 0,
         )
 
         if (volumeEnforced) {
@@ -39,18 +45,19 @@ class VolumeService(context: Context) {
 
     private fun startVolumeEnforcement(showSystemUI: Boolean) {
         // Define the Runnable that checks and enforces the volume level
-        volumeCheckRunnable = Runnable {
-            val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-            if (currentVolume != targetVolume) {
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_MUSIC,
-                    targetVolume,
-                    if (showSystemUI) AudioManager.FLAG_SHOW_UI else 0
-                )
+        volumeCheckRunnable =
+            Runnable {
+                val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                if (currentVolume != targetVolume) {
+                    audioManager.setStreamVolume(
+                        AudioManager.STREAM_MUSIC,
+                        targetVolume,
+                        if (showSystemUI) AudioManager.FLAG_SHOW_UI else 0,
+                    )
+                }
+                // Schedule the next check after 1000ms
+                handler.postDelayed(volumeCheckRunnable!!, 1000)
             }
-            // Schedule the next check after 1000ms
-            handler.postDelayed(volumeCheckRunnable!!, 1000)
-        }
         // Start the first run
         handler.post(volumeCheckRunnable!!)
     }
@@ -70,7 +77,7 @@ class VolumeService(context: Context) {
             audioManager.setStreamVolume(
                 AudioManager.STREAM_MUSIC,
                 prevVolume,
-                if (showSystemUI) AudioManager.FLAG_SHOW_UI else 0
+                if (showSystemUI) AudioManager.FLAG_SHOW_UI else 0,
             )
             previousVolume = null
         }
@@ -78,13 +85,16 @@ class VolumeService(context: Context) {
 
     fun requestAudioFocus() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val audioAttributes = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_ALARM)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build()
+            val audioAttributes =
+                AudioAttributes
+                    .Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build()
 
             focusRequest =
-                AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+                AudioFocusRequest
+                    .Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
                     .setAudioAttributes(audioAttributes)
                     .build()
 
@@ -94,11 +104,12 @@ class VolumeService(context: Context) {
             }
         } else {
             @Suppress("DEPRECATION")
-            val result = audioManager.requestAudioFocus(
-                null,
-                AudioManager.STREAM_ALARM,
-                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
-            )
+            val result =
+                audioManager.requestAudioFocus(
+                    null,
+                    AudioManager.STREAM_ALARM,
+                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK,
+                )
             if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 Log.e(TAG, "Audio focus request failed")
             }

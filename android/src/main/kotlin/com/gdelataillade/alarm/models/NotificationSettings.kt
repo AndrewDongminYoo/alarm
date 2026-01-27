@@ -10,7 +10,7 @@ data class NotificationSettings(
     val body: String,
     val stopButton: String? = null,
     val icon: String? = null,
-    val iconColor: Int? = null
+    val iconColor: Int? = null,
 ) {
     companion object {
         fun fromWire(e: NotificationSettingsWire): NotificationSettings {

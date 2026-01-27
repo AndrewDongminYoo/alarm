@@ -1,7 +1,5 @@
 package com.gdelataillade.alarm.alarm
 
-import com.gdelataillade.alarm.generated.AlarmApi
-import com.gdelataillade.alarm.generated.AlarmTriggerApi
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
@@ -9,13 +7,17 @@ import android.os.Build
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.gdelataillade.alarm.api.AlarmApiImpl
+import com.gdelataillade.alarm.generated.AlarmApi
+import com.gdelataillade.alarm.generated.AlarmTriggerApi
 import com.gdelataillade.alarm.services.AlarmRingingLiveData
 import io.flutter.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
-class AlarmPlugin : FlutterPlugin, ActivityAware {
+class AlarmPlugin :
+    FlutterPlugin,
+    ActivityAware {
     private var activity: Activity? = null
 
     companion object {
@@ -38,7 +40,7 @@ class AlarmPlugin : FlutterPlugin, ActivityAware {
         activity = binding.activity
         AlarmRingingLiveData.instance.observe(
             binding.activity as LifecycleOwner,
-            notificationObserver
+            notificationObserver,
         )
     }
 
@@ -55,23 +57,24 @@ class AlarmPlugin : FlutterPlugin, ActivityAware {
         onDetachedFromActivity()
     }
 
-    private val notificationObserver = Observer<Boolean> {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1) {
-            Log.w(TAG, "Making app visible on lock screen is not supported on this version of Android.")
-            return@Observer
+    private val notificationObserver =
+        Observer<Boolean> {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1) {
+                Log.w(TAG, "Making app visible on lock screen is not supported on this version of Android.")
+                return@Observer
+            }
+            val activity = activity ?: return@Observer
+            if (it) {
+                Log.d(TAG, "Making app visible on lock screen...")
+                activity.setShowWhenLocked(true)
+                activity.setTurnScreenOn(true)
+                val keyguardManager =
+                    activity.applicationContext.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                keyguardManager.requestDismissKeyguard(activity, null)
+            } else {
+                Log.d(TAG, "Reverting making app visible on lock screen...")
+                activity.setShowWhenLocked(false)
+                activity.setTurnScreenOn(false)
+            }
         }
-        val activity = activity ?: return@Observer
-        if (it) {
-            Log.d(TAG, "Making app visible on lock screen...")
-            activity.setShowWhenLocked(true)
-            activity.setTurnScreenOn(true)
-            val keyguardManager =
-                activity.applicationContext.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-            keyguardManager.requestDismissKeyguard(activity, null)
-        } else {
-            Log.d(TAG, "Reverting making app visible on lock screen...")
-            activity.setShowWhenLocked(false)
-            activity.setTurnScreenOn(false)
-        }
-    }
 }
