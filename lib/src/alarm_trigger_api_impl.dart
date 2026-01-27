@@ -17,9 +17,9 @@ class AlarmTriggerApiImpl extends AlarmTriggerApi {
   AlarmTriggerApiImpl._({
     required AlarmRangCallback alarmRang,
     required AlarmStoppedCallback alarmStopped,
-  }) : _alarmRang = alarmRang,
-       _alarmStopped = alarmStopped,
-       super() {
+  })  : _alarmRang = alarmRang,
+        _alarmStopped = alarmStopped,
+        super() {
     AlarmTriggerApi.setUp(this);
   }
 

@@ -17,9 +17,9 @@ class AlarmSet extends Equatable {
   AlarmSet.empty() : _alarms = _idSet();
 
   static HashSet<AlarmSettings> _idSet() => HashSet<AlarmSettings>(
-    equals: (a, b) => a.id == b.id,
-    hashCode: (a) => a.id.hashCode,
-  );
+        equals: (a, b) => a.id == b.id,
+        hashCode: (a) => a.id.hashCode,
+      );
 
   final HashSet<AlarmSettings> _alarms;
 
