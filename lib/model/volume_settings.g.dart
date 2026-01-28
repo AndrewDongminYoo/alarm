@@ -32,14 +32,12 @@ VolumeSettings _$VolumeSettingsFromJson(Map<String, dynamic> json) =>
       return val;
     });
 
-Map<String, dynamic> _$VolumeSettingsToJson(VolumeSettings instance) =>
-    <String, dynamic>{
-      if (instance.volume case final value?) 'volume': value,
-      if (instance.fadeDuration?.inMicroseconds case final value?)
-        'fadeDuration': value,
-      'fadeSteps': instance.fadeSteps.map((e) => e.toJson()).toList(),
-      'volumeEnforced': instance.volumeEnforced,
-    };
+Map<String, dynamic> _$VolumeSettingsToJson(VolumeSettings instance) => <String, dynamic>{
+  'volume': ?instance.volume,
+  'fadeDuration': ?instance.fadeDuration?.inMicroseconds,
+  'fadeSteps': instance.fadeSteps.map((e) => e.toJson()).toList(),
+  'volumeEnforced': instance.volumeEnforced,
+};
 
 VolumeFadeStep _$VolumeFadeStepFromJson(Map<String, dynamic> json) =>
     $checkedCreate('VolumeFadeStep', json, ($checkedConvert) {
@@ -53,8 +51,7 @@ VolumeFadeStep _$VolumeFadeStepFromJson(Map<String, dynamic> json) =>
       return val;
     });
 
-Map<String, dynamic> _$VolumeFadeStepToJson(VolumeFadeStep instance) =>
-    <String, dynamic>{
-      'time': instance.time.inMicroseconds,
-      'volume': instance.volume,
-    };
+Map<String, dynamic> _$VolumeFadeStepToJson(VolumeFadeStep instance) => <String, dynamic>{
+  'time': instance.time.inMicroseconds,
+  'volume': instance.volume,
+};

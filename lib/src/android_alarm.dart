@@ -11,9 +11,8 @@ class AndroidAlarm extends BaseAlarm {
   AndroidAlarm() : super(Logger('AndroidAlarm'));
 
   /// Disable the notification on kill service (Android-only).
-  Future<void> disableWarningNotificationOnKill() => BaseAlarm.api
-      .disableWarningNotificationOnKill()
-      .catchError(AlarmExceptionHandlers.catchError<void>);
+  Future<void> disableWarningNotificationOnKill() =>
+      BaseAlarm.api.disableWarningNotificationOnKill().catchError(AlarmExceptionHandlers.catchError<void>);
 
   // Insert other Android platform specific code..
 }

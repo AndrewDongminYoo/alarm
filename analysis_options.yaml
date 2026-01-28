@@ -5,3 +5,8 @@ analyzer:
   errors:
     todo: ignore
     directives_ordering: ignore
+    lines_longer_than_80_chars: ignore
+
+formatter:
+  page_width: 120
+  trailing_commas: preserve

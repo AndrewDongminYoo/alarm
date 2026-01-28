@@ -16,6 +16,5 @@ class AlarmException implements Exception {
   final String? stacktrace;
 
   @override
-  String toString() =>
-      '${code.name}: $message${stacktrace != null ? '\n$stacktrace' : ''}';
+  String toString() => '${code.name}: $message${stacktrace != null ? '\n$stacktrace' : ''}';
 }

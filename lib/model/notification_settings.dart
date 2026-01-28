@@ -7,6 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 // 🌎 Project imports:
 import 'package:alarm/src/generated/platform_bindings.g.dart';
+import 'package:alarm/utils/color_converter.dart';
 
 part 'notification_settings.g.dart';
 
@@ -25,8 +26,7 @@ class NotificationSettings extends Equatable {
   });
 
   /// Converts the JSON object to a `NotificationSettings` instance.
-  factory NotificationSettings.fromJson(Map<String, dynamic> json) =>
-      _$NotificationSettingsFromJson(json);
+  factory NotificationSettings.fromJson(Map<String, dynamic> json) => _$NotificationSettingsFromJson(json);
 
   /// Title of the notification to be shown when alarm is triggered.
   final String title;
@@ -72,6 +72,7 @@ class NotificationSettings extends Equatable {
   ///
   /// If `null`, the icon will have a default color.
   /// Defaults to `null`.
+  @ColorConverter()
   final Color? iconColor;
 
   /// Converts the `NotificationSettings` instance to a JSON object.
@@ -79,15 +80,15 @@ class NotificationSettings extends Equatable {
 
   /// Converts to wire datatype which is used for host platform communication.
   NotificationSettingsWire toWire() => NotificationSettingsWire(
-        title: title,
-        body: body,
-        stopButton: stopButton,
-        icon: icon,
-        iconColorAlpha: iconColor?.a,
-        iconColorRed: iconColor?.r,
-        iconColorGreen: iconColor?.g,
-        iconColorBlue: iconColor?.b,
-      );
+    title: title,
+    body: body,
+    stopButton: stopButton,
+    icon: icon,
+    iconColorAlpha: iconColor?.a,
+    iconColorRed: iconColor?.r,
+    iconColorGreen: iconColor?.g,
+    iconColorBlue: iconColor?.b,
+  );
 
   /// Creates a copy of this notification settings but with the given fields
   /// replaced with the new values.

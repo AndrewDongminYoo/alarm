@@ -30,9 +30,7 @@ abstract class BaseAlarm {
   Future<bool> setAlarm(AlarmSettings settings) async {
     final id = settings.id;
     try {
-      await api
-          .setAlarm(alarmSettings: settings.toWire())
-          .catchError(AlarmExceptionHandlers.catchError<void>);
+      await api.setAlarm(alarmSettings: settings.toWire()).catchError(AlarmExceptionHandlers.catchError<void>);
 
       _log.info(
         'Alarm with id $id scheduled successfully at ${settings.dateTime}',
@@ -52,9 +50,7 @@ abstract class BaseAlarm {
     PlatformTimers.stopAlarm(id);
 
     try {
-      await api
-          .stopAlarm(alarmId: id)
-          .catchError(AlarmExceptionHandlers.catchError<void>);
+      await api.stopAlarm(alarmId: id).catchError(AlarmExceptionHandlers.catchError<void>);
 
       _log.info('Alarm with id $id stopped.');
 
@@ -74,9 +70,7 @@ abstract class BaseAlarm {
   /// Checks whether an alarm or any alarm (if id is null) is ringing.
   Future<bool> isRinging([int? id]) async {
     try {
-      final res = await api
-          .isRinging(alarmId: id)
-          .catchError(AlarmExceptionHandlers.catchError<bool>);
+      final res = await api.isRinging(alarmId: id).catchError(AlarmExceptionHandlers.catchError<bool>);
       return res;
     } on AlarmException catch (e) {
       _log.severe('Failed to check if alarm is ringing: $e');
@@ -85,7 +79,6 @@ abstract class BaseAlarm {
   }
 
   /// Sets the native notification on app kill title and body.
-  Future<void> setWarningNotificationOnKill(String title, String body) => api
-      .setWarningNotificationOnKill(title: title, body: body)
-      .catchError(AlarmExceptionHandlers.catchError<void>);
+  Future<void> setWarningNotificationOnKill(String title, String body) =>
+      api.setWarningNotificationOnKill(title: title, body: body).catchError(AlarmExceptionHandlers.catchError<void>);
 }

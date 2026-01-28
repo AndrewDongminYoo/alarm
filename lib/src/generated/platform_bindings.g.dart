@@ -42,8 +42,7 @@ bool _deepEquals(Object? a, Object? b) {
     return a.length == b.length &&
         a.entries.every(
           (MapEntry<Object?, Object?> entry) =>
-              (b as Map<Object?, Object?>).containsKey(entry.key) &&
-              _deepEquals(entry.value, b[entry.key]),
+              (b as Map<Object?, Object?>).containsKey(entry.key) && _deepEquals(entry.value, b[entry.key]),
         );
   }
   return a == b;
@@ -329,8 +328,7 @@ class NotificationSettingsWire {
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object other) {
-    if (other is! NotificationSettingsWire ||
-        other.runtimeType != runtimeType) {
+    if (other is! NotificationSettingsWire || other.runtimeType != runtimeType) {
       return false;
     }
     if (identical(this, other)) {
@@ -396,9 +394,8 @@ class AlarmApi {
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
   AlarmApi({BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
-      : pigeonVar_binaryMessenger = binaryMessenger,
-        pigeonVar_messageChannelSuffix =
-            messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+    : pigeonVar_binaryMessenger = binaryMessenger,
+      pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
@@ -406,8 +403,7 @@ class AlarmApi {
   final String pigeonVar_messageChannelSuffix;
 
   Future<void> setAlarm({required AlarmSettingsWire alarmSettings}) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.alarm.AlarmApi.setAlarm$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.alarm.AlarmApi.setAlarm$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -431,8 +427,7 @@ class AlarmApi {
   }
 
   Future<void> stopAlarm({required int alarmId}) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.alarm.AlarmApi.stopAlarm$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.alarm.AlarmApi.stopAlarm$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -456,8 +451,7 @@ class AlarmApi {
   }
 
   Future<void> stopAll() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.alarm.AlarmApi.stopAll$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.alarm.AlarmApi.stopAll$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -479,8 +473,7 @@ class AlarmApi {
   }
 
   Future<bool> isRinging({required int? alarmId}) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.alarm.AlarmApi.isRinging$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.alarm.AlarmApi.isRinging$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -572,8 +565,7 @@ abstract class AlarmTriggerApi {
     BinaryMessenger? binaryMessenger,
     String messageChannelSuffix = '',
   }) {
-    messageChannelSuffix =
-        messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+    messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
     {
       final pigeonVar_channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmRang$messageChannelSuffix',

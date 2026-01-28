@@ -8,8 +8,7 @@ import 'package:pigeon/pigeon.dart';
     dartOut: 'lib/src/generated/platform_bindings.g.dart',
     dartPackageName: 'alarm',
     swiftOut: 'ios/Classes/generated/FlutterBindings.g.swift',
-    kotlinOut:
-        'android/src/main/kotlin/com/gdelataillade/alarm/generated/FlutterBindings.g.kt',
+    kotlinOut: 'android/src/main/kotlin/com/gdelataillade/alarm/generated/FlutterBindings.g.kt',
     kotlinOptions: KotlinOptions(package: 'com.gdelataillade.alarm.generated'),
   ),
 )
