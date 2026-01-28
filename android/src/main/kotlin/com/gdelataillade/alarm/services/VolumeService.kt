@@ -4,7 +4,6 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import io.flutter.Log
@@ -84,46 +83,30 @@ class VolumeService(
     }
 
     fun requestAudioFocus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val audioAttributes =
-                AudioAttributes
-                    .Builder()
-                    .setUsage(AudioAttributes.USAGE_ALARM)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build()
+        // minSdk 29 always supports AudioFocusRequest (API 26+)
+        val audioAttributes =
+            AudioAttributes
+                .Builder()
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build()
 
-            focusRequest =
-                AudioFocusRequest
-                    .Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
-                    .setAudioAttributes(audioAttributes)
-                    .build()
+        focusRequest =
+            AudioFocusRequest
+                .Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+                .setAudioAttributes(audioAttributes)
+                .build()
 
-            val result = audioManager.requestAudioFocus(focusRequest!!)
-            if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                Log.e(TAG, "Audio focus request failed")
-            }
-        } else {
-            @Suppress("DEPRECATION")
-            val result =
-                audioManager.requestAudioFocus(
-                    null,
-                    AudioManager.STREAM_ALARM,
-                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK,
-                )
-            if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                Log.e(TAG, "Audio focus request failed")
-            }
+        val result = audioManager.requestAudioFocus(focusRequest!!)
+        if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            Log.e(TAG, "Audio focus request failed")
         }
     }
 
     fun abandonAudioFocus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            focusRequest?.let {
-                audioManager.abandonAudioFocusRequest(it)
-            }
-        } else {
-            @Suppress("DEPRECATION")
-            audioManager.abandonAudioFocus(null)
+        // minSdk 29 always supports abandonAudioFocusRequest (API 26+)
+        focusRequest?.let {
+            audioManager.abandonAudioFocusRequest(it)
         }
     }
 }

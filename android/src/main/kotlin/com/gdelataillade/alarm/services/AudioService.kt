@@ -4,7 +4,6 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.RingtoneManager
-import android.os.Build
 import com.gdelataillade.alarm.models.VolumeFadeStep
 import io.flutter.Log
 import java.util.Timer
@@ -44,19 +43,14 @@ class AudioService(
 
         try {
             MediaPlayer().apply {
-                // Set audio attributes for alarm playback
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    setAudioAttributes(
-                        AudioAttributes
-                            .Builder()
-                            .setUsage(AudioAttributes.USAGE_ALARM)
-                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                            .build(),
-                    )
-                } else {
-                    @Suppress("DEPRECATION")
-                    setAudioStreamType(android.media.AudioManager.STREAM_ALARM)
-                }
+                // Set audio attributes for alarm playback (minSdk 29 supports this)
+                setAudioAttributes(
+                    AudioAttributes
+                        .Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build(),
+                )
 
                 if (filePath == null) {
                     // Use the device's default alarm sound

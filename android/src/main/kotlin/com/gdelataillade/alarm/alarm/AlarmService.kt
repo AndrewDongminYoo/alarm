@@ -234,15 +234,12 @@ class AlarmService : Service() {
         id: Int,
         notification: Notification,
     ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(
-                id,
-                notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK,
-            )
-        } else {
-            startForeground(id, notification)
-        }
+        // minSdk 29 (Q) always supports FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+        startForeground(
+            id,
+            notification,
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK,
+        )
     }
 
     private fun startFallbackForeground(notificationId: Int) {
