@@ -6,8 +6,8 @@ class AppTerminateManager: NSObject {
 
     private static let logger = OSLog(subsystem: ALARM_BUNDLE, category: "AppTerminateManager")
 
-    private var notificationTitleOnKill: String? = nil
-    private var notificationBodyOnKill: String? = nil
+    private var notificationTitleOnKill: String?
+    private var notificationBodyOnKill: String?
     private var observerAdded: Bool = false
 
     override private init() {

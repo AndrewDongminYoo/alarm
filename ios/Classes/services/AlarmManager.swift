@@ -145,7 +145,7 @@ class AlarmManager: NSObject {
             return
         }
 
-        if !config.settings.allowAlarmOverlap && alarms.contains(where: { $1.state == .ringing }) {
+        if !config.settings.allowAlarmOverlap, alarms.contains(where: { $1.state == .ringing }) {
             os_log(.error, log: AlarmManager.logger, "Ignoring alarm with id %d because another alarm is already ringing.", id)
             await stopAlarm(id: id, cancelNotif: true)
             return
@@ -237,7 +237,7 @@ class AlarmManager: NSObject {
             AppTerminateManager.shared.stopMonitoring()
         }
 
-        if !alarms.contains(where: { $1.state == .ringing }) && alarms.contains(where: { $1.state == .scheduled && $1.settings.iOSBackgroundAudio }) {
+        if !alarms.contains(where: { $1.state == .ringing }), alarms.contains(where: { $1.state == .scheduled && $1.settings.iOSBackgroundAudio }) {
             BackgroundAudioManager.shared.start(registrar: registrar)
         } else {
             BackgroundAudioManager.shared.stop()

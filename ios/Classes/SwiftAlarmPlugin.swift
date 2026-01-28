@@ -4,10 +4,10 @@ import os.log
 public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
     private static let logger = OSLog(subsystem: ALARM_BUNDLE, category: "SwiftAlarmPlugin")
 
-    private static var instance: SwiftAlarmPlugin? = nil
+    private static var instance: SwiftAlarmPlugin?
 
-    private var api: AlarmApiImpl? = nil
-    private var alarmTriggerApi: AlarmTriggerApi? = nil
+    private var api: AlarmApiImpl?
+    private var alarmTriggerApi: AlarmTriggerApi?
 
     init(registrar: FlutterPluginRegistrar) {
         api = AlarmApiImpl(registrar: registrar)

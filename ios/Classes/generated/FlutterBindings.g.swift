@@ -420,7 +420,10 @@ protocol AlarmApi {
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
 class AlarmApiSetup {
-    static var codec: FlutterStandardMessageCodec { FlutterBindingsPigeonCodec.shared }
+    static var codec: FlutterStandardMessageCodec {
+        FlutterBindingsPigeonCodec.shared
+    }
+
     /// Sets up an instance of `AlarmApi` to handle messages through the `binaryMessenger`.
     static func setUp(binaryMessenger: FlutterBinaryMessenger, api: AlarmApi?, messageChannelSuffix: String = "") {
         let channelSuffix = messageChannelSuffix.count > 0 ? ".\(messageChannelSuffix)" : ""

@@ -69,7 +69,7 @@ class AlarmRingManager: NSObject {
     }
 
     func stop() async {
-        if volumeEnforcementTimer == nil && previousVolume == nil && audioPlayer == nil {
+        if volumeEnforcementTimer == nil, previousVolume == nil, audioPlayer == nil {
             os_log(.debug, log: AlarmRingManager.logger, "Alarm ringer already stopped.")
             return
         }
