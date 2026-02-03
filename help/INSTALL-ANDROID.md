@@ -6,7 +6,7 @@ If you are using a plugin version below `3.0.0`, follow [these installation step
 
 In your `android/app/build.gradle`, make sure you have the following config:
 
-```Gradle
+```groovy
 android {
   compileSdkVersion 34
   [...]
@@ -22,7 +22,7 @@ android {
 
 In your `android/settings.gradle`, ensure you have the following Kotlin plugin configuration:
 
-```Gradle
+```groovy
 plugins {
     id "org.jetbrains.kotlin.android" version "1.9.0" apply false  // Must be at least 1.9.0
 }

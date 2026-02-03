@@ -11,7 +11,7 @@ First, open your project in Xcode, select your Runner and then Signing & Capabil
 
 It should add this in your Info.plist code:
 
-```XML
+```xml
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -29,7 +29,7 @@ Then, open your Info.plist and add the key `Permitted background task scheduler 
 
 It should add this in your Info.plist code:
 
-```XML
+```xml
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.gdelataillade.fetch</string>
