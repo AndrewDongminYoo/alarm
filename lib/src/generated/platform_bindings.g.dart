@@ -17,11 +17,7 @@ PlatformException _createConnectionError(String channelName) {
   );
 }
 
-List<Object?> wrapResponse({
-  Object? result,
-  PlatformException? error,
-  bool empty = false,
-}) {
+List<Object?> wrapResponse({Object? result, PlatformException? error, bool empty = false}) {
   if (empty) {
     return <Object?>[];
   }
@@ -33,10 +29,7 @@ List<Object?> wrapResponse({
 
 bool _deepEquals(Object? a, Object? b) {
   if (a is List && b is List) {
-    return a.length == b.length &&
-        a.indexed.every(
-          ((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]),
-        );
+    return a.length == b.length && a.indexed.every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
   }
   if (a is Map && b is Map) {
     return a.length == b.length &&
@@ -276,6 +269,7 @@ class NotificationSettingsWire {
     this.iconColorRed,
     this.iconColorGreen,
     this.iconColorBlue,
+    required this.keepNotificationAfterAlarmEnds,
   });
 
   String title;
@@ -294,6 +288,8 @@ class NotificationSettingsWire {
 
   double? iconColorBlue;
 
+  bool keepNotificationAfterAlarmEnds;
+
   List<Object?> _toList() {
     return <Object?>[
       title,
@@ -304,6 +300,7 @@ class NotificationSettingsWire {
       iconColorRed,
       iconColorGreen,
       iconColorBlue,
+      keepNotificationAfterAlarmEnds,
     ];
   }
 
@@ -322,6 +319,7 @@ class NotificationSettingsWire {
       iconColorRed: result[5] as double?,
       iconColorGreen: result[6] as double?,
       iconColorBlue: result[7] as double?,
+      keepNotificationAfterAlarmEnds: result[8]! as bool,
     );
   }
 
@@ -409,9 +407,7 @@ class AlarmApi {
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[alarmSettings],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[alarmSettings]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
       throw _createConnectionError(pigeonVar_channelName);
@@ -433,9 +429,7 @@ class AlarmApi {
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[alarmId],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[alarmId]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
       throw _createConnectionError(pigeonVar_channelName);
@@ -479,9 +473,7 @@ class AlarmApi {
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[alarmId],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[alarmId]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
       throw _createConnectionError(pigeonVar_channelName);
@@ -501,10 +493,7 @@ class AlarmApi {
     }
   }
 
-  Future<void> setWarningNotificationOnKill({
-    required String title,
-    required String body,
-  }) async {
+  Future<void> setWarningNotificationOnKill({required String title, required String body}) async {
     final pigeonVar_channelName =
         'dev.flutter.pigeon.alarm.AlarmApi.setWarningNotificationOnKill$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
@@ -512,9 +501,7 @@ class AlarmApi {
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[title, body],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[title, body]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
       throw _createConnectionError(pigeonVar_channelName);
@@ -576,10 +563,7 @@ abstract class AlarmTriggerApi {
         pigeonVar_channel.setMessageHandler(null);
       } else {
         pigeonVar_channel.setMessageHandler((Object? message) async {
-          assert(
-            message != null,
-            'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmRang was null.',
-          );
+          assert(message != null, 'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmRang was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final int? arg_alarmId = (args[0] as int?);
           assert(
@@ -609,10 +593,7 @@ abstract class AlarmTriggerApi {
         pigeonVar_channel.setMessageHandler(null);
       } else {
         pigeonVar_channel.setMessageHandler((Object? message) async {
-          assert(
-            message != null,
-            'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmStopped was null.',
-          );
+          assert(message != null, 'Argument for dev.flutter.pigeon.alarm.AlarmTriggerApi.alarmStopped was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final int? arg_alarmId = (args[0] as int?);
           assert(

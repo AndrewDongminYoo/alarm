@@ -302,6 +302,7 @@ struct NotificationSettingsWire: Hashable {
     var iconColorRed: Double? = nil
     var iconColorGreen: Double? = nil
     var iconColorBlue: Double? = nil
+    var keepNotificationAfterAlarmEnds: Bool
 
     // swift-format-ignore: AlwaysUseLowerCamelCase
     static func fromList(_ pigeonVar_list: [Any?]) -> NotificationSettingsWire? {
@@ -313,6 +314,7 @@ struct NotificationSettingsWire: Hashable {
         let iconColorRed: Double? = nilOrValue(pigeonVar_list[5])
         let iconColorGreen: Double? = nilOrValue(pigeonVar_list[6])
         let iconColorBlue: Double? = nilOrValue(pigeonVar_list[7])
+        let keepNotificationAfterAlarmEnds = pigeonVar_list[8] as! Bool
 
         return NotificationSettingsWire(
             title: title,
@@ -322,7 +324,8 @@ struct NotificationSettingsWire: Hashable {
             iconColorAlpha: iconColorAlpha,
             iconColorRed: iconColorRed,
             iconColorGreen: iconColorGreen,
-            iconColorBlue: iconColorBlue
+            iconColorBlue: iconColorBlue,
+            keepNotificationAfterAlarmEnds: keepNotificationAfterAlarmEnds
         )
     }
 
@@ -336,6 +339,7 @@ struct NotificationSettingsWire: Hashable {
             iconColorRed,
             iconColorGreen,
             iconColorBlue,
+            keepNotificationAfterAlarmEnds,
         ]
     }
 

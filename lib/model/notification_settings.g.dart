@@ -21,6 +21,10 @@ NotificationSettings _$NotificationSettingsFromJson(
         const ColorConverter().fromJson,
       ),
     ),
+    keepNotificationAfterAlarmEnds: $checkedConvert(
+      'keepNotificationAfterAlarmEnds',
+      (v) => v as bool? ?? false,
+    ),
   );
   return val;
 });
@@ -36,6 +40,7 @@ Map<String, dynamic> _$NotificationSettingsToJson(
     instance.iconColor,
     const ColorConverter().toJson,
   ),
+  'keepNotificationAfterAlarmEnds': instance.keepNotificationAfterAlarmEnds,
 };
 
 Value? _$JsonConverterFromJson<Json, Value>(

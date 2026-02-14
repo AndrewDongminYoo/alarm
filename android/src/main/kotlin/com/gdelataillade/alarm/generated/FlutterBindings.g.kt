@@ -266,6 +266,7 @@ data class NotificationSettingsWire(
     val iconColorRed: Double? = null,
     val iconColorGreen: Double? = null,
     val iconColorBlue: Double? = null,
+    val keepNotificationAfterAlarmEnds: Boolean,
 ) {
     companion object {
         fun fromList(pigeonVar_list: List<Any?>): NotificationSettingsWire {
@@ -277,7 +278,18 @@ data class NotificationSettingsWire(
             val iconColorRed = pigeonVar_list[5] as Double?
             val iconColorGreen = pigeonVar_list[6] as Double?
             val iconColorBlue = pigeonVar_list[7] as Double?
-            return NotificationSettingsWire(title, body, stopButton, icon, iconColorAlpha, iconColorRed, iconColorGreen, iconColorBlue)
+            val keepNotificationAfterAlarmEnds = pigeonVar_list[8] as Boolean
+            return NotificationSettingsWire(
+                title,
+                body,
+                stopButton,
+                icon,
+                iconColorAlpha,
+                iconColorRed,
+                iconColorGreen,
+                iconColorBlue,
+                keepNotificationAfterAlarmEnds,
+            )
         }
     }
 
@@ -291,6 +303,7 @@ data class NotificationSettingsWire(
             iconColorRed,
             iconColorGreen,
             iconColorBlue,
+            keepNotificationAfterAlarmEnds,
         )
 
     override fun equals(other: Any?): Boolean {
