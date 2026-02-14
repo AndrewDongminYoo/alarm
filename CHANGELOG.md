@@ -1,7 +1,11 @@
+## 5.2.1
+
+- [iOS] Added `NotificationSettings.keepNotificationAfterAlarmEnds` to control whether the notification should stay after alarm ends or not.
+
 ## 5.2.0
 
-- Use device's default alarm sound when `assetAudioPath` is null.
-- [Android] Add support for Android Gradle Plugin 8.
+- Using device's default alarm sound when `assetAudioPath` is null.
+- [Android] Added support for Android Gradle Plugin 8.
 
 ## 5.1.5
 
@@ -22,7 +26,7 @@
 
 ## 5.1.1
 
-- [Android] Add icon color parameter for notification.
+- [Android] Added icon color parameter for notification.
 
 ## 5.1.0
 

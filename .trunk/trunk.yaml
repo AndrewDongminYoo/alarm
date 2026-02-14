@@ -23,7 +23,7 @@ lint:
   enabled:
     - swiftformat@0.59.0
     - actionlint@1.7.10
-    - checkov@3.2.499
+    - checkov@3.2.501
     - git-diff-check
     - ktlint@1.8.0
     - osv-scanner@2.3.2
