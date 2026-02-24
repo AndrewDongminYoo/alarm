@@ -39,3 +39,40 @@ flutter:
         pluginClass: AlarmPlugin
       ios:
         pluginClass: SwiftAlarmPlugin
+
+import_sorter:
+  emojis: true
+
+scripts:
+  reinstall:
+    (description): Cleans and reinstalls the Flutter project by removing old builds, regenerate boiler-plate codes
+    (scripts):
+      - flutter clean
+      - flutter packages get
+      - $bootstrap
+
+  bootstrap:
+    (description): Initializes the project by generating necessary code, sorting imports, applying fixes, and formatting.
+    (scripts):
+      - flutter pub get
+      - $generate
+      - $format
+
+  generate:
+    (description): Runs code generation builders and sorts imports to set up project files.
+    (scripts):
+      - dart run pigeon --input pigeons/alarm_api.dart
+      - dart run build_runner build --delete-conflicting-outputs
+
+  format:
+    (description): Applies automated fixes, sorts imports, and formats the codebase to ensure consistent code quality.
+    (scripts):
+      - dart fix --apply
+      - dart format --line-length 120 .
+      - dart run import_sorter:main
+
+  hard:
+    (description): Forces an upgrade of Flutter and its packages to their latest versions and updates CocoaPods
+    (scripts):
+      - flutter upgrade --force
+      - flutter packages upgrade --major-versions --tighten
