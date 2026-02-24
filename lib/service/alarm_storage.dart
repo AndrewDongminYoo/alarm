@@ -88,7 +88,9 @@ class AlarmStorage {
     final keys = _prefs.getKeys();
 
     for (final key in keys) {
-      if (key.startsWith(prefix)) return true;
+      if (key.startsWith(prefix)) {
+        return true;
+      }
     }
 
     return false;

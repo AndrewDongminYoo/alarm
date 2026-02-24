@@ -41,7 +41,9 @@ class PlatformTimers {
       id: id,
       onBackground: () => _disposeTimer(id),
       onForeground: () async {
-        if (_fgbgSubscriptions[id] == null) return;
+        if (_fgbgSubscriptions[id] == null) {
+          return;
+        }
 
         bool alarmIsRinging;
         if (Platform.isIOS) {
@@ -92,15 +94,21 @@ class PlatformTimers {
     required void Function() onBackground,
   }) {
     _fgbgSubscriptions[id] = FGBGEvents.instance.stream.listen((event) {
-      if (event == FGBGType.foreground) onForeground();
-      if (event == FGBGType.background) onBackground();
+      if (event == FGBGType.foreground) {
+        onForeground();
+      }
+      if (event == FGBGType.background) {
+        onBackground();
+      }
     });
   }
 
   /// Checks periodically if alarm is ringing, as long as app is in foreground.
   static Timer _periodicTimer(void Function()? onRing, DateTime dt, int id) {
     return Timer.periodic(const Duration(milliseconds: 200), (_) {
-      if (DateTime.now().isBefore(dt)) return;
+      if (DateTime.now().isBefore(dt)) {
+        return;
+      }
       _disposeAlarm(id);
       onRing?.call();
     });

@@ -50,7 +50,9 @@ class AlarmSet extends Equatable {
 
   /// Returns a new [AlarmSet] with the given [alarmId] removed.
   AlarmSet removeById(int alarmId) {
-    if (_alarms.none((alarm) => alarm.id == alarmId)) return this;
+    if (_alarms.none((alarm) => alarm.id == alarmId)) {
+      return this;
+    }
     return AlarmSet(_alarms.where((a) => a.id != alarmId));
   }
 

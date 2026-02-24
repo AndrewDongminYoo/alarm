@@ -74,7 +74,9 @@ class Alarm {
   static Future<void> checkAlarm() async {
     final alarms = await getAlarms();
 
-    if (iOS) await stopAll();
+    if (iOS) {
+      await stopAll();
+    }
 
     for (final alarm in alarms) {
       final now = DateTime.now();
@@ -158,8 +160,12 @@ class Alarm {
     String title,
     String body,
   ) async {
-    if (iOS) await IOSAlarm().setWarningNotificationOnKill(title, body);
-    if (android) await AndroidAlarm().setWarningNotificationOnKill(title, body);
+    if (iOS) {
+      await IOSAlarm().setWarningNotificationOnKill(title, body);
+    }
+    if (android) {
+      await AndroidAlarm().setWarningNotificationOnKill(title, body);
+    }
   }
 
   /// Stops alarm.
@@ -239,7 +245,9 @@ class Alarm {
     final alarms = await getAlarms();
 
     for (final alarm in alarms) {
-      if (alarm.id == id) return alarm;
+      if (alarm.id == id) {
+        return alarm;
+      }
     }
     _log.warning('Alarm with id $id not found.');
 
