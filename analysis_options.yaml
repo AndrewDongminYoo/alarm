@@ -1,7 +1,13 @@
-include: package:very_good_analysis/analysis_options.yaml
+include: flutter_lints.yaml
 
 analyzer:
-  exclude: [lib/src/generated/**, lib/**/*.g.dart]
+  exclude:
+    - lib/src/generated/platform_bindings.g.dart
+  language:
+    # Do not cast nullable values to non-nullable types.
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
   errors:
     todo: ignore
     directives_ordering: ignore
