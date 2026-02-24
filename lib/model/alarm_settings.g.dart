@@ -9,18 +9,18 @@ part of 'alarm_settings.dart';
 AlarmSettings _$AlarmSettingsFromJson(Map<String, dynamic> json) =>
     $checkedCreate('AlarmSettings', json, ($checkedConvert) {
       final val = AlarmSettings(
-        id: $checkedConvert('id', (v) => (v as num).toInt()),
+        id: $checkedConvert('id', (v) => (v! as num).toInt()),
         dateTime: $checkedConvert(
           'dateTime',
-          (v) => DateTime.parse(v as String),
+          (v) => DateTime.parse(v! as String),
         ),
         volumeSettings: $checkedConvert(
           'volumeSettings',
-          (v) => VolumeSettings.fromJson(v as Map<String, dynamic>),
+          (v) => VolumeSettings.fromJson(v! as Map<String, dynamic>),
         ),
         notificationSettings: $checkedConvert(
           'notificationSettings',
-          (v) => NotificationSettings.fromJson(v as Map<String, dynamic>),
+          (v) => NotificationSettings.fromJson(v! as Map<String, dynamic>),
         ),
         assetAudioPath: $checkedConvert('assetAudioPath', (v) => v as String?),
         loopAudio: $checkedConvert('loopAudio', (v) => v as bool? ?? true),

@@ -44,9 +44,9 @@ VolumeFadeStep _$VolumeFadeStepFromJson(Map<String, dynamic> json) =>
       final val = VolumeFadeStep(
         $checkedConvert(
           'time',
-          (v) => Duration(microseconds: (v as num).toInt()),
+          (v) => Duration(microseconds: (v! as num).toInt()),
         ),
-        $checkedConvert('volume', (v) => (v as num).toDouble()),
+        $checkedConvert('volume', (v) => (v! as num).toDouble()),
       );
       return val;
     });

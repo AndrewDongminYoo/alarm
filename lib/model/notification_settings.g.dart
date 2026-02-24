@@ -10,8 +10,8 @@ NotificationSettings _$NotificationSettingsFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('NotificationSettings', json, ($checkedConvert) {
   final val = NotificationSettings(
-    title: $checkedConvert('title', (v) => v as String),
-    body: $checkedConvert('body', (v) => v as String),
+    title: $checkedConvert('title', (v) => v! as String),
+    body: $checkedConvert('body', (v) => v! as String),
     stopButton: $checkedConvert('stopButton', (v) => v as String?),
     icon: $checkedConvert('icon', (v) => v as String?),
     iconColor: $checkedConvert(
