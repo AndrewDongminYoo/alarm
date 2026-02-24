@@ -163,7 +163,11 @@ class AlarmRingManager: NSObject {
                     return nil
                 }
                 audioURL = URL(fileURLWithPath: audioPath)
+            } else if assetAudioPath.hasPrefix("/") {
+                // Absolute path (e.g., from path_provider): use it directly
+                audioURL = URL(fileURLWithPath: assetAudioPath)
             } else {
+                // Relative path: resolve against Documents directory (legacy behaviour)
                 guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
                     os_log(.error, log: AlarmRingManager.logger, "Document directory not found.")
                     return nil
